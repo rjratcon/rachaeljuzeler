@@ -95,6 +95,24 @@ main {
     min-height: calc(100vh - 280px);
 }
 
+.page-intro {
+    max-width: 900px;
+    margin: 0 auto 3rem;
+    text-align: center;
+}
+
+.page-intro h1 {
+    font-size: 2.6rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    letter-spacing: 0.02em;
+}
+
+.page-intro p {
+    font-size: 1.2rem;
+    line-height: 1.6;
+}
+
 /* WORK GRID */
 .work-grid {
     display: grid;
@@ -117,12 +135,15 @@ main {
 }
 
 .work-item {
+    display: block;
     background-color: rgba(0, 0, 0, 0.1);
     border: 2px solid var(--brand-black);
     overflow: hidden;
     position: relative;
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     aspect-ratio: 1;
+    text-decoration: none;
+    color: inherit;
 }
 
 
@@ -587,6 +608,14 @@ footer {
         margin-top: 180px;
     }
 
+    .page-intro h1 {
+        font-size: 2rem;
+    }
+
+    .page-intro p {
+        font-size: 1rem;
+    }
+
     .work-grid {
         grid-template-columns: 1fr;
         gap: 1.5rem;
@@ -878,6 +907,10 @@ footer {
 
 .updates-header {
     margin-bottom: 3rem;
+}
+
+.updates-header h1 {
+    margin-bottom: 1rem;
 }
 
 .updates-description {

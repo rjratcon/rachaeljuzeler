@@ -1,3 +1,5 @@
+const SITE_URL = 'https://rachaeljuzeler.com/';
+
 // Navigation functionality
 document.addEventListener('DOMContentLoaded', function() {
     // Handle navigation active states
@@ -13,19 +15,6 @@ document.addEventListener('DOMContentLoaded', function() {
             (currentPage === 'index.html' && linkHref === 'index.html')) {
             link.classList.add('active');
         }
-    });
-
-    // Handle work item clicks
-    const workItems = document.querySelectorAll('.work-item');
-
-    workItems.forEach(item => {
-        item.addEventListener('click', function() {
-            const projectId = this.getAttribute('data-project');
-            if (projectId) {
-                // Navigate to individual project page
-                window.location.href = `project.html?id=${projectId}`;
-            }
-        });
     });
 
     // Handle project page loading
@@ -148,6 +137,8 @@ function loadProjectContent() {
         return;
     }
 
+    updateProjectSeo(projectId, project);
+
     // Update page content
     document.getElementById('project-title').textContent = project.title;
     document.getElementById('project-subtitle').textContent = project.subtitle;
@@ -159,6 +150,64 @@ function loadProjectContent() {
 
     // Load project images dynamically from folder
     loadProjectImages(project.folder, project.title);
+}
+
+function buildAbsoluteUrl(path) {
+    return new URL(path, SITE_URL).toString();
+}
+
+function setMeta(selector, content) {
+    const element = document.querySelector(selector);
+    if (element && content) {
+        element.setAttribute('content', content);
+    }
+}
+
+function setCanonical(href) {
+    const canonical = document.querySelector('link[rel="canonical"]');
+    if (canonical && href) {
+        canonical.setAttribute('href', href);
+    }
+}
+
+function getProjectImageUrl(folderName) {
+    return buildAbsoluteUrl('images/rjuzeler.jpg');
+}
+
+function updateProjectSeo(projectId, project) {
+    const projectUrl = buildAbsoluteUrl(`project.html?id=${projectId}`);
+    const pageTitle = `${project.title} | Rachael Juzeler`;
+    const description = project.description.split('\n')[0].trim();
+    const imageUrl = getProjectImageUrl(project.folder);
+
+    document.title = pageTitle;
+    setCanonical(projectUrl);
+    setMeta('meta[name="description"]', description);
+    setMeta('meta[property="og:title"]', pageTitle);
+    setMeta('meta[property="og:description"]', description);
+    setMeta('meta[property="og:url"]', projectUrl);
+    setMeta('meta[property="og:image"]', imageUrl);
+    setMeta('meta[name="twitter:title"]', pageTitle);
+    setMeta('meta[name="twitter:description"]', description);
+    setMeta('meta[name="twitter:image"]', imageUrl);
+
+    const structuredData = document.getElementById('project-structured-data');
+    if (structuredData) {
+        structuredData.textContent = JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'VisualArtwork',
+            name: project.title,
+            description,
+            url: projectUrl,
+            image: imageUrl,
+            artMedium: project.subtitle,
+            creator: {
+                '@type': 'Person',
+                name: 'Rachael Juzeler',
+                url: buildAbsoluteUrl('')
+            }
+        });
+    }
 }
 
 // Function to automatically load images from project folder
