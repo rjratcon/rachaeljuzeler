@@ -40,19 +40,19 @@ function loadProjectContent() {
     const projectData = {
         project1: {
             title: "ReConstructed ReFuse: Air, Sea and Landscapes",
-            subtitle: "2024/25, Mosaic & Kiln-worked Glass Installation, Public Art Commission",
+            subtitle: "2025, Public Art Commission",
             description: "ReConstructed ReFuse: Air, Sea & Landscapes was created for the Municipality of Anchorage Public Art Program in 2024/25. This immersive installation consists of eight large mosaics, a suspended herring net and three mobiles, created almost entirely of waste glass, mainly kiln fired recycled bottles and old windows.\n\nThe first four mosaics, overhead as you enter the building, depict seascapes filled with to-size king and sockeye salmon, herring and jellyfish, all created from window glass reformed in a kiln. Walking up the entry stairwell, there is a net filled with glass herring on the left reflecting in the sun. At the landing, the mosaics continue and move up the stairwell, into a creek and landscape scene with spawning salmon, birds, and other signs of wildlife.\n\nThe pebble tesserae in the creek scene are made of crushed bottle glass; the leaves, wildlife and other objects, of fused bottle and sheet glass, mixed with reclaimed tile tesserae. With the exception of a few art glass details, the mosaic tesserae is entirely reclaimed, reused and waste glass transformed in the kiln. The final piece of this installation are the mobiles hanging overhead in the entrance. Flying glass herring and small murrelet-type birds made of embellished and fused sheet glass float above with shimmering wings of reused window screen.",
             folder: "project1"
         },
         project2: {
             title: "Pilchuck Glass School Studies",
-            subtitle: "2022-2023, Glass Casting & Architectural Application, Various Dimensions",
+            subtitle: "2022 & 2023",
             description: "In 2022 I attended Pilchuck Glass Studio studying glass casting with architectural application taught by Hank Murta Adams. It changed my glass trajectory. I continued the second session, Monumental in 2023, which truly was — being so lucky as to study with both Hank and Isabel de Obaldia. These are examples of some of the works I created during my time there.",
             folder: "project2"
         },
         project3: {
-            title: "Chandeliers",
-            subtitle: "2021-2023, Kiln Fused Glass & Found Objects, Various Dimensions",
+            title: "CHANDELIERS",
+            subtitle: "2010 - current",
             description: "Created as commissioned pieces, these chandeliers combine kiln fused glass, kiln cast glass, found metal and lighting elements. The P & R Chandelier spans three floors, supported by an anchor chain, with each level containing a lighting element. The top floor features cast glass paint brushes suspended from a reclaimed shrimp pot, with rebar ties and kiln fused glass pendants in netting patterns.\n\nThe Alaska Robotics Chandelier was created for Alaska Robotics Gallery, featuring glass pendants using multiple kilned glass techniques and reclaimed found objects. Comic book inspired glass panels are embellished with drawings by Pat Race and kiln fused with copper inclusions. The center contains glass pencils constructed using non-traditional pate-de-verre technique, all suspended from a reused shrimp pot frame.",
             folder: "project3"
         },
@@ -124,7 +124,7 @@ function loadProjectContent() {
         },
         project15: {
             title: "Mosaics",
-            subtitle: "2020-2024, Mosaic Works, Various Dimensions & Locations",
+            subtitle: "2019-current, Mosaic Works, Various Dimensions & Locations",
             description: "The Mosaics collection represents a diverse body of work utilizing traditional and innovative mosaic techniques. These pieces incorporate kiln-formed glass, reclaimed tiles, found objects, and recycled materials to create intricate compositions. Each mosaic reflects the artist's commitment to sustainability and creative reuse while exploring patterns found in nature and the built environment.",
             folder: "project15"
         }
