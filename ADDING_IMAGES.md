@@ -93,3 +93,59 @@ The system recognizes these image names (in order of preference):
 - Add at least one image with a recognized name to the project folder
 - Wait a moment for the page to load the images
 - Check that file names don't have spaces or special characters
+
+## Available Work
+
+Available pieces now live in:
+
+```text
+images/available/[piece title]/
+```
+
+Example:
+
+```text
+images/available/Glacier Study 02 Sawyer Glacier/
+images/available/Herring/
+```
+
+Inside each piece folder:
+- The first image becomes the main image on the Available page
+- Extra images appear on the piece detail page
+
+You do not need to name these by hand. The content manager will copy and rename them automatically.
+
+## Updating Available Work with the Python App
+
+Rachael can run the content manager in either of these ways:
+
+```text
+Double-click: launch_content_manager.bat
+```
+
+or from Command Prompt / PowerShell:
+
+```powershell
+py -3.13 rachael_content_manager.py
+```
+
+Then:
+1. Open the `AVAILABLE` tab
+2. Enter the piece title, price, size, and description
+3. Click `Browse for Images`
+4. Select the images from the computer
+5. Click `Add Available Work`
+
+For updates:
+1. Open the `AVAILABLE` tab
+2. Choose the piece from the dropdown
+3. Edit the information
+4. Optionally replace the images
+5. Click `Update Work`
+
+The app updates:
+- `admin_data/available_works.json`
+- `available-data.js`
+- `sitemap.xml`
+
+The website pages then read that information automatically.

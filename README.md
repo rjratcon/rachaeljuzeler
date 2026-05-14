@@ -59,8 +59,11 @@ When you make changes:
 
 - `styles.css` - Controls how your website looks (colors, fonts, layout)
 - `script.js` - Makes the image galleries work
+- `available.js` - Controls the Available page and each available piece detail page
+- `available-data.js` - Stores the available work data shown on the website
 - `images/` folder - All your photos and artwork
 - Each `.html` file - A page on your website
+- `launch_content_manager.bat` - Opens the content manager on Windows
 
 ## Getting Help
 
