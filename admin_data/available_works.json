@@ -24,10 +24,10 @@
     "status": "Available",
     "folder": "Herring",
     "images": [
-      "herring OG_main.jpg",
-      "herring no.2.jpg",
-      "herring no.3.jpg",
-      "herring no.6.jpg"
+      "main.jpg",
+      "detail-1.jpg",
+      "detail-2.jpg",
+      "detail-3.jpg"
     ]
   },
   "hooligan": {
