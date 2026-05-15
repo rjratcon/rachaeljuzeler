@@ -591,6 +591,11 @@ footer {
 }
 
 @media (max-width: 768px) {
+    header,
+    footer {
+        position: static;
+    }
+
     .header-title {
         flex-direction: column;
         align-items: flex-start;
@@ -606,14 +611,25 @@ footer {
         margin-top: 0.25rem;
     }
 
+    nav ul {
+        flex-wrap: wrap;
+    }
+
+    nav li {
+        flex: 1 1 50%;
+    }
+
     nav a {
-        padding: 0.75rem 1rem;
-        font-size: 0.9rem;
+        padding: 0.85rem 0.5rem;
+        font-size: 0.82rem;
+        letter-spacing: 0.08em;
     }
 
     main {
         padding: 1.5rem;
-        margin-top: 180px;
+        margin-top: 0;
+        margin-bottom: 0;
+        min-height: auto;
     }
 
     .page-intro h1 {
@@ -716,8 +732,23 @@ footer {
         padding: 1.25rem;
     }
 
+    .available-card-image {
+        padding: 0.35rem;
+    }
+
+    .available-piece-main-image {
+        max-height: min(70vh, 32rem);
+        object-fit: contain;
+        background: rgba(255, 255, 255, 0.12);
+    }
+
     .available-piece-gallery {
         grid-template-columns: 1fr;
+    }
+
+    .available-piece-thumb {
+        aspect-ratio: auto;
+        max-height: 18rem;
     }
 
     /* Bio section mobile styles */

@@ -8,11 +8,94 @@ function getAvailableWorks() {
     return Array.isArray(window.availableWorks) ? window.availableWorks : [];
 }
 
-function getAvailableImagePath(work, imageName) {
-    if (!imageName) {
+function encodePathSegment(segment) {
+    return encodeURIComponent(String(segment || '').trim());
+}
+
+function toTitleCase(value) {
+    return String(value || '')
+        .trim()
+        .replace(/\w\S*/g, part => part.charAt(0).toUpperCase() + part.slice(1).toLowerCase());
+}
+
+function getAvailableFolderCandidates(work) {
+    const rawValues = [
+        work && work.folder,
+        work && work.title,
+        work && work.folder ? toTitleCase(work.folder) : '',
+        work && work.title ? toTitleCase(work.title) : '',
+        work && work.folder ? String(work.folder).toLowerCase() : '',
+        work && work.title ? String(work.title).toLowerCase() : '',
+        work && work.folder ? String(work.folder).replace(/\s+/g, '-') : '',
+        work && work.title ? String(work.title).replace(/\s+/g, '-') : ''
+    ];
+
+    return rawValues
+        .map(value => String(value || '').trim())
+        .filter(Boolean)
+        .filter((value, index, values) => values.indexOf(value) === index);
+}
+
+function getAvailableImagePath(folderName, imageName) {
+    if (!folderName || !imageName) {
         return 'images/rjuzeler.jpg';
     }
-    return `images/available/${work.folder}/${imageName}`;
+
+    return `images/available/${encodePathSegment(folderName)}/${encodePathSegment(imageName)}`;
+}
+
+function getAvailableImageCandidates(work, imageName, index) {
+    const folderCandidates = getAvailableFolderCandidates(work);
+    const normalizedNames = [];
+    const isPrimaryImage = index === 0;
+
+    if (isPrimaryImage) {
+        normalizedNames.push('main.jpg', 'main.jpeg', 'main.png', 'main.webp');
+    } else if (typeof index === 'number' && index > 0) {
+        normalizedNames.push(
+            `detail-${index}.jpg`,
+            `detail-${index}.jpeg`,
+            `detail-${index}.png`,
+            `detail-${index}.webp`
+        );
+    }
+
+    const imageCandidates = [imageName, ...normalizedNames]
+        .map(value => String(value || '').trim())
+        .filter(Boolean)
+        .filter((value, candidateIndex, values) => values.indexOf(value) === candidateIndex);
+
+    const paths = [];
+
+    folderCandidates.forEach(folderName => {
+        imageCandidates.forEach(fileName => {
+            paths.push(getAvailableImagePath(folderName, fileName));
+        });
+    });
+
+    return paths.length ? paths : ['images/rjuzeler.jpg'];
+}
+
+function setAvailableImageSource(imageElement, work, imageName, index) {
+    const candidates = getAvailableImageCandidates(work, imageName, index);
+    let candidateIndex = 0;
+
+    function applyCandidate() {
+        imageElement.src = candidates[candidateIndex];
+    }
+
+    imageElement.onerror = function() {
+        candidateIndex += 1;
+        if (candidateIndex < candidates.length) {
+            applyCandidate();
+            return;
+        }
+
+        imageElement.onerror = null;
+        imageElement.src = 'images/rjuzeler.jpg';
+    };
+
+    applyCandidate();
 }
 
 function setAvailableMeta(selector, content) {
@@ -59,8 +142,9 @@ function renderAvailableListing() {
 
         const image = document.createElement('img');
         image.className = 'available-card-image';
-        image.src = getAvailableImagePath(work, (work.images || [])[0]);
         image.alt = work.title;
+        image.loading = 'lazy';
+        setAvailableImageSource(image, work, (work.images || [])[0], 0);
         imageWrap.appendChild(image);
 
         if (work.status && work.status !== 'Available') {
@@ -120,8 +204,8 @@ function renderAvailableDetail() {
     const status = document.getElementById('available-piece-status');
 
     title.textContent = work.title;
-    mainImage.src = getAvailableImagePath(work, (work.images || [])[0]);
     mainImage.alt = work.title;
+    setAvailableImageSource(mainImage, work, (work.images || [])[0], 0);
     price.textContent = work.price || 'Price available on request.';
     size.textContent = work.size || '';
     size.hidden = !work.size;
@@ -149,8 +233,9 @@ function renderAvailableDetail() {
         }
         const thumb = document.createElement('img');
         thumb.className = 'available-piece-thumb';
-        thumb.src = getAvailableImagePath(work, imageName);
         thumb.alt = `${work.title} detail ${index}`;
+        thumb.loading = 'lazy';
+        setAvailableImageSource(thumb, work, imageName, index);
         gallery.appendChild(thumb);
     });
 
@@ -160,7 +245,8 @@ function renderAvailableDetail() {
 function updateAvailableDetailSeo(work) {
     const pageTitle = `${work.title} | Available Work | Rachael Juzeler`;
     const description = work.description ? work.description.split('\n')[0].trim() : `Available work by Rachael Juzeler: ${work.title}.`;
-    const imageUrl = availableAbsoluteUrl(getAvailableImagePath(work, (work.images || [])[0]));
+    const primaryImagePath = getAvailableImageCandidates(work, (work.images || [])[0], 0)[0] || 'images/rjuzeler.jpg';
+    const imageUrl = availableAbsoluteUrl(primaryImagePath);
     const pageUrl = availableAbsoluteUrl(`available-piece.html?id=${work.id}`);
 
     document.title = pageTitle;

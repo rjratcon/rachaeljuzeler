@@ -923,10 +923,8 @@ class RachaelContentManager:
         return slug[:80] or "available-work"
 
     def make_available_folder_name(self, title):
-        """Create a safe Windows folder name that still resembles the piece title"""
-        folder_name = re.sub(r'[<>:"/\\|?*]', '', title).strip()
-        folder_name = re.sub(r'\s+', ' ', folder_name)
-        return folder_name[:100] or "Available Work"
+        """Create a web-safe folder name for available works"""
+        return self.slugify(title)
 
     def get_available_image_names(self, folder_path):
         """Return available work images in display order"""
