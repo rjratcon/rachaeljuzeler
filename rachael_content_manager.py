@@ -180,9 +180,19 @@ class RachaelContentManager:
                 bg='#786E00', fg='#000000').pack(anchor='w', padx=10, pady=(10,0))
 
         self.project_select = ttk.Combobox(existing_frame, width=60,
-                                          font=('EB Garamond', 10))
+                                          font=('EB Garamond', 10),
+                                          state='readonly')
         self.project_select.pack(pady=5, padx=10)
         self.project_select.bind('<<ComboboxSelected>>', self.on_project_selected)
+
+        self.project_editing_label = tk.Label(
+            existing_frame,
+            text="No project selected",
+            font=('EB Garamond', 10, 'italic'),
+            bg='#786E00',
+            fg='#333333'
+        )
+        self.project_editing_label.pack(anchor='w', padx=10, pady=(0, 10))
 
         # Project editing fields
         tk.Label(existing_frame, text="Project Title:",
@@ -208,11 +218,37 @@ class RachaelContentManager:
                                                                  insertbackground='#000000')
         self.edit_project_description.pack(pady=5, padx=10)
 
+        tk.Label(existing_frame, text="Current Folder:",
+                font=('EB Garamond', 10, 'bold'),
+                bg='#786E00', fg='#000000').pack(anchor='w', padx=10, pady=(10, 0))
+        self.edit_project_folder_label = tk.Label(
+            existing_frame,
+            text="No project selected",
+            font=('EB Garamond', 10),
+            bg='#786E00',
+            fg='#333333'
+        )
+        self.edit_project_folder_label.pack(anchor='w', padx=10)
+
+        tk.Label(existing_frame, text="Images in Folder:",
+                font=('EB Garamond', 10, 'bold'),
+                bg='#786E00', fg='#000000').pack(anchor='w', padx=10, pady=(10, 0))
+        self.edit_project_image_list = tk.Listbox(
+            existing_frame,
+            height=5,
+            bg='#786E00',
+            fg='#000000',
+            font=('EB Garamond', 9),
+            selectbackground='#000000',
+            selectforeground='#786E00'
+        )
+        self.edit_project_image_list.pack(fill='x', padx=10, pady=5)
+
         # Image management for existing projects
         img_frame = tk.Frame(existing_frame, bg='#786E00')
         img_frame.pack(pady=10, padx=10, fill='x')
 
-        tk.Label(img_frame, text="Add/Replace Images:",
+        tk.Label(img_frame, text="Replace Images (optional):",
                 font=('EB Garamond', 10, 'bold'),
                 bg='#786E00', fg='#000000').pack(anchor='w')
 
@@ -612,9 +648,19 @@ class RachaelContentManager:
                 font=('EB Garamond', 10, 'bold'),
                 bg='#786E00', fg='#000000').pack(anchor='w', padx=10, pady=(10,0))
         self.available_select = ttk.Combobox(edit_frame, width=60,
-                                            font=('EB Garamond', 10))
+                                            font=('EB Garamond', 10),
+                                            state='readonly')
         self.available_select.pack(pady=5, padx=10)
         self.available_select.bind('<<ComboboxSelected>>', self.on_available_selected)
+
+        self.available_editing_label = tk.Label(
+            edit_frame,
+            text="No work selected",
+            font=('EB Garamond', 10, 'italic'),
+            bg='#786E00',
+            fg='#333333'
+        )
+        self.available_editing_label.pack(anchor='w', padx=10, pady=(0, 10))
 
         # Work fields
         work_fields_frame = tk.Frame(edit_frame, bg='#786E00')
@@ -909,6 +955,26 @@ class RachaelContentManager:
         for image_path in image_paths:
             listbox.insert(tk.END, Path(image_path).name)
 
+    def get_project_image_names(self, folder_name):
+        """Return project images in display order"""
+        if not folder_name:
+            return []
+
+        folder_path = self.projects_base_dir / folder_name
+        if not folder_path.exists():
+            return []
+
+        supported_exts = {'.jpg', '.jpeg', '.png', '.gif', '.bmp', '.tiff', '.webp'}
+        image_files = [path.name for path in folder_path.iterdir() if path.is_file() and path.suffix.lower() in supported_exts]
+
+        def image_sort_key(name):
+            lower = name.lower()
+            if 'main' in lower:
+                return (0, lower)
+            return (1, lower)
+
+        return sorted(image_files, key=image_sort_key)
+
     def sanitize_filename(self, text):
         """Convert text to safe filename"""
         sanitized = re.sub(r'[^a-zA-Z0-9\s]', '', text)
@@ -926,12 +992,67 @@ class RachaelContentManager:
         """Create a web-safe folder name for available works"""
         return self.slugify(title)
 
+    def supported_available_image_extensions(self):
+        """Image extensions accepted for available works"""
+        return {'.jpg', '.jpeg', '.png', '.gif', '.bmp', '.tiff', '.webp'}
+
+    def find_available_folder_path(self, folder_name):
+        """Find an available-work folder, tolerating older case mismatches"""
+        if not folder_name:
+            return None
+
+        direct_path = self.available_base_dir / folder_name
+        if direct_path.exists():
+            return direct_path
+
+        folder_name_lower = folder_name.lower()
+        for candidate in self.available_base_dir.iterdir():
+            if candidate.is_dir() and candidate.name.lower() == folder_name_lower:
+                return candidate
+
+        return direct_path
+
+    def ensure_available_folder(self, title, preferred_folder_name=None, create_if_missing=True):
+        """Resolve an available-work folder path and normalize it to the canonical slug"""
+        canonical_folder_name = self.make_available_folder_name(title)
+        canonical_folder_path = self.available_base_dir / canonical_folder_name
+
+        candidate_names = [preferred_folder_name, title, canonical_folder_name]
+        for candidate_name in candidate_names:
+            folder_path = self.find_available_folder_path(candidate_name)
+            if not folder_path or not folder_path.exists():
+                continue
+
+            if folder_path.resolve() == canonical_folder_path.resolve():
+                if create_if_missing:
+                    canonical_folder_path.mkdir(parents=True, exist_ok=True)
+                return canonical_folder_name, canonical_folder_path
+
+            if canonical_folder_path.exists():
+                canonical_images = self.get_available_image_names(canonical_folder_path)
+                folder_images = self.get_available_image_names(folder_path)
+                if folder_images and not canonical_images:
+                    for image_name in folder_images:
+                        shutil.move(str(folder_path / image_name), str(canonical_folder_path / image_name))
+                    try:
+                        folder_path.rmdir()
+                    except OSError:
+                        pass
+                return canonical_folder_name, canonical_folder_path
+
+            folder_path.rename(canonical_folder_path)
+            return canonical_folder_name, canonical_folder_path
+
+        if create_if_missing:
+            canonical_folder_path.mkdir(parents=True, exist_ok=True)
+        return canonical_folder_name, canonical_folder_path
+
     def get_available_image_names(self, folder_path):
         """Return available work images in display order"""
         if not folder_path.exists():
             return []
 
-        supported_exts = {'.jpg', '.jpeg', '.png', '.gif', '.bmp', '.tiff', '.webp'}
+        supported_exts = self.supported_available_image_extensions()
         image_files = [path.name for path in folder_path.iterdir() if path.is_file() and path.suffix.lower() in supported_exts]
 
         def image_sort_key(name):
@@ -986,6 +1107,25 @@ class RachaelContentManager:
                 print(f"Error loading available works: {e}")
                 self.available_data = {}
 
+        normalized_stored_data = {}
+        for work_id, work in self.available_data.items():
+            if not isinstance(work, dict):
+                continue
+
+            title = work.get('title', '')
+            canonical_folder_name, folder_path = self.ensure_available_folder(title, work.get('folder', ''), create_if_missing=False)
+            normalized_stored_data[work_id] = {
+                'id': work.get('id', work_id),
+                'title': title,
+                'price': work.get('price', ''),
+                'size': work.get('size', ''),
+                'description': work.get('description', ''),
+                'status': work.get('status', 'Available'),
+                'folder': canonical_folder_name,
+                'images': self.get_available_image_names(folder_path) if folder_path.exists() else work.get('images', [])
+            }
+
+        self.available_data = normalized_stored_data
         scanned_data = self.scan_available_folders()
 
         for work_id, scanned in scanned_data.items():
@@ -1004,12 +1144,8 @@ class RachaelContentManager:
 
         # Refresh image lists for entries whose folders already exist
         for work_id, work in list(self.available_data.items()):
-            folder_name = work.get('folder', '')
-            if not folder_name:
-                folder_name = self.make_available_folder_name(work.get('title', ''))
-                work['folder'] = folder_name
-
-            folder_path = self.available_base_dir / folder_name
+            folder_name, folder_path = self.ensure_available_folder(work.get('title', ''), work.get('folder', ''), create_if_missing=False)
+            work['folder'] = folder_name
             if folder_path.exists():
                 work['images'] = self.get_available_image_names(folder_path)
 
@@ -1026,6 +1162,12 @@ class RachaelContentManager:
         work_names = [f"{work_id}: {data['title']}" for work_id, data in sorted(self.available_data.items(), key=lambda item: item[1].get('title', '').lower())]
         self.available_select['values'] = work_names
 
+    def refresh_project_image_list(self, image_names):
+        """Show the images currently assigned to a project"""
+        self.edit_project_image_list.delete(0, tk.END)
+        for image_name in image_names:
+            self.edit_project_image_list.insert(tk.END, image_name)
+
     def refresh_existing_available_images(self, image_names):
         """Show the images currently assigned to an available work"""
         self.edit_available_image_list.delete(0, tk.END)
@@ -1034,7 +1176,7 @@ class RachaelContentManager:
 
     def copy_available_images_to_folder(self, image_paths, folder_path):
         """Copy selected available work images into the target folder using website-friendly names"""
-        supported_exts = {'.jpg', '.jpeg', '.png', '.gif', '.bmp', '.tiff', '.webp'}
+        supported_exts = self.supported_available_image_extensions()
         folder_path.mkdir(parents=True, exist_ok=True)
 
         for existing in folder_path.iterdir():
@@ -1051,6 +1193,19 @@ class RachaelContentManager:
             saved_names.append(filename)
 
         return saved_names
+
+    def sync_available_outputs(self):
+        """Rebuild available-work JSON, JS, and sitemap from current folder contents"""
+        for work_id, work in list(self.available_data.items()):
+            folder_name, folder_path = self.ensure_available_folder(work.get('title', ''), work.get('folder', ''), create_if_missing=False)
+            work['id'] = work_id
+            work['folder'] = folder_name
+            work['images'] = self.get_available_image_names(folder_path) if folder_path.exists() else []
+
+        self.save_available_data()
+        self.generate_available_data_js()
+        self.regenerate_sitemap()
+        self.refresh_available_dropdown()
 
     def generate_available_data_js(self):
         """Generate the frontend data file used by the available pages"""
@@ -1138,9 +1293,7 @@ class RachaelContentManager:
 
         # Load available works data and refresh related files
         self.load_available_data()
-        self.refresh_available_dropdown()
-        self.generate_available_data_js()
-        self.regenerate_sitemap()
+        self.sync_available_outputs()
 
     def load_projects_from_script(self):
         """Extract project data from script.js file"""
@@ -1200,6 +1353,7 @@ class RachaelContentManager:
         project_id = selection.split(':')[0]
         if project_id in self.projects_data:
             project = self.projects_data[project_id]
+            project_images = project.get('images') or self.get_project_image_names(project.get('folder', project_id))
 
             # Clear and populate title field
             self.edit_project_title.delete(0, tk.END)
@@ -1215,6 +1369,9 @@ class RachaelContentManager:
 
             # Store the current project ID for updates
             self.current_project_id = project_id
+            self.project_editing_label.config(text=f"Currently editing: {project.get('title', project_id)} ({project_id})")
+            self.edit_project_folder_label.config(text=f"images/{project.get('folder', project_id)}")
+            self.refresh_project_image_list(project_images)
 
     def on_cv_section_selected(self, event):
         """Handle CV section selection"""
@@ -1252,7 +1409,11 @@ class RachaelContentManager:
         self.edit_work_description.delete('1.0', tk.END)
         self.edit_work_description.insert('1.0', work.get('description', ''))
 
-        self.edit_work_folder_label.config(text=f"images/available/{work.get('folder', '')}")
+        folder_name, folder_path = self.ensure_available_folder(work.get('title', ''), work.get('folder', ''), create_if_missing=False)
+        work['folder'] = folder_name
+        work['images'] = self.get_available_image_names(folder_path) if folder_path.exists() else []
+        self.available_editing_label.config(text=f"Currently editing: {work.get('title', work_id)} ({work_id})")
+        self.edit_work_folder_label.config(text=f"images/available/{folder_name}")
         self.edit_available_image_paths = []
         self.refresh_existing_available_images(work.get('images', []))
 
@@ -1480,8 +1641,7 @@ class RachaelContentManager:
             messagebox.showerror("Error", "A work with this title already exists. Please use a different title.")
             return
 
-        folder_name = self.make_available_folder_name(title)
-        folder_path = self.available_base_dir / folder_name
+        folder_name, folder_path = self.ensure_available_folder(title)
 
         try:
             if self.new_available_image_paths:
@@ -1507,10 +1667,7 @@ class RachaelContentManager:
                 'images': images
             }
 
-            self.save_available_data()
-            self.generate_available_data_js()
-            self.regenerate_sitemap()
-            self.refresh_available_dropdown()
+            self.sync_available_outputs()
 
             messagebox.showinfo(
                 "Success",
@@ -1550,23 +1707,32 @@ class RachaelContentManager:
             messagebox.showerror("Error", "Selected work could not be found.")
             return
 
+        new_work_id = self.slugify(title)
+        if new_work_id != self.current_available_id and new_work_id in self.available_data:
+            messagebox.showerror("Error", "Another available work already uses this title. Please choose a different title.")
+            return
+
         old_folder_name = work.get('folder', self.make_available_folder_name(work.get('title', title)))
-        new_folder_name = self.make_available_folder_name(title)
-        old_folder_path = self.available_base_dir / old_folder_name
-        new_folder_path = self.available_base_dir / new_folder_name
 
         try:
-            if old_folder_name != new_folder_name and old_folder_path.exists() and not new_folder_path.exists():
-                old_folder_path.rename(new_folder_path)
-            elif old_folder_name == new_folder_name:
-                new_folder_path = old_folder_path
+            new_folder_name, new_folder_path = self.ensure_available_folder(title, old_folder_name)
 
             if self.edit_available_image_paths:
                 images = self.copy_available_images_to_folder(self.edit_available_image_paths, new_folder_path)
             else:
                 images = self.get_available_image_names(new_folder_path)
 
+            if not images:
+                messagebox.showerror("Error", "This available work must have at least one image.")
+                return
+
+            if new_work_id != self.current_available_id:
+                self.available_data[new_work_id] = self.available_data.pop(self.current_available_id)
+                self.current_available_id = new_work_id
+                work = self.available_data[self.current_available_id]
+
             work.update({
+                'id': self.current_available_id,
                 'title': title,
                 'price': price,
                 'size': size,
@@ -1576,10 +1742,7 @@ class RachaelContentManager:
                 'images': images
             })
 
-            self.save_available_data()
-            self.generate_available_data_js()
-            self.regenerate_sitemap()
-            self.refresh_available_dropdown()
+            self.sync_available_outputs()
 
             self.available_select.set(f"{self.current_available_id}: {title}")
             self.edit_work_folder_label.config(text=f"images/available/{new_folder_name}")
@@ -1613,15 +1776,12 @@ class RachaelContentManager:
             return
 
         try:
-            folder_path = self.available_base_dir / work.get('folder', '')
+            _, folder_path = self.ensure_available_folder(work.get('title', ''), work.get('folder', ''), create_if_missing=False)
             if folder_path.exists():
                 shutil.rmtree(folder_path)
 
             del self.available_data[self.current_available_id]
-            self.save_available_data()
-            self.generate_available_data_js()
-            self.regenerate_sitemap()
-            self.refresh_available_dropdown()
+            self.sync_available_outputs()
 
             self.available_select.set('')
             self.current_available_id = None

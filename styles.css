@@ -728,6 +728,11 @@ footer {
         gap: 2rem;
     }
 
+    .available-card {
+        max-width: 28rem;
+        margin: 0 auto;
+    }
+
     .available-blurb {
         padding: 1.25rem;
     }
@@ -736,19 +741,31 @@ footer {
         padding: 0.35rem;
     }
 
+    .available-card-text {
+        min-height: 0;
+    }
+
+    .available-piece-main-wrap {
+        aspect-ratio: auto;
+        min-height: 18rem;
+    }
+
     .available-piece-main-image {
         max-height: min(70vh, 32rem);
+        height: auto;
         object-fit: contain;
         background: rgba(255, 255, 255, 0.12);
     }
 
     .available-piece-gallery {
         grid-template-columns: 1fr;
+        gap: 0.75rem;
     }
 
     .available-piece-thumb {
         aspect-ratio: auto;
         max-height: 18rem;
+        object-fit: contain;
     }
 
     /* Bio section mobile styles */
@@ -926,19 +943,26 @@ footer {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 2.5rem 2rem;
+    align-items: start;
 }
 
 .available-card {
     display: block;
+    width: 100%;
 }
 
 .available-card-link {
-    display: block;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
     color: var(--brand-black);
     text-decoration: none;
 }
 
 .available-card-image-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     position: relative;
     overflow: hidden;
     border: 2px solid var(--brand-black);
@@ -963,6 +987,7 @@ footer {
 .available-card-text {
     padding-top: 1rem;
     text-align: center;
+    min-height: 4.75rem;
 }
 
 .available-card-title {
@@ -1015,14 +1040,19 @@ footer {
 }
 
 .available-piece-main-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    aspect-ratio: 1 / 1;
     border: 2px solid var(--brand-black);
     background: rgba(255, 255, 255, 0.12);
 }
 
 .available-piece-main-image {
     width: 100%;
+    height: 100%;
     display: block;
-    object-fit: cover;
+    object-fit: contain;
 }
 
 .available-piece-gallery {
