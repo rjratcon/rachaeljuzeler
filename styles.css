@@ -1210,3 +1210,59 @@ footer {
         max-height: 300px;
     }
 }
+
+@media (max-width: 768px) {
+    .available-catalog-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+
+    .available-card {
+        max-width: 28rem;
+        margin: 0 auto;
+    }
+
+    .available-card-text {
+        min-height: 0;
+    }
+
+    .available-piece-layout {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    .available-piece-media,
+    .available-piece-info {
+        width: 100%;
+        min-width: 0;
+    }
+
+    .available-piece-main-wrap {
+        aspect-ratio: auto;
+        min-height: 18rem;
+    }
+
+    .available-piece-main-image {
+        height: auto;
+        max-height: min(70vh, 32rem);
+        object-fit: contain;
+        background: rgba(255, 255, 255, 0.12);
+    }
+
+    .available-piece-gallery {
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+        margin-top: 0.75rem;
+    }
+
+    .available-piece-thumb {
+        aspect-ratio: auto;
+        max-height: 18rem;
+        object-fit: contain;
+    }
+
+    .available-piece-header h1 {
+        text-align: left;
+        word-break: break-word;
+    }
+}
