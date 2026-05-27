@@ -1,10 +1,67 @@
 window.availableWorks = [
   {
+    "id": "glacier-studies-blue-pools-no2",
+    "title": "Glacier studies: Blue pools no.2",
+    "price": "$220",
+    "size": "8x5x1\"",
+    "description": "Experimental kiln-worked glass, mosaic, mirror.\nGlacier studies are an ongoing theme I’ve been working on. Created in May 2023 for a show at Haines Brewery, this is a partial statement from the exhibit: . . . Last summer I attended Pilchuck Glass School and it changed my life. Concentrating on sand-casting hot glass, The experience was a pivotal change in my life and artistic trajectory. Adapting techniques learned from my time there, I’ve been kiln-casting on sand, using my glass crackle experiments, refiring with metals on sand, to create my newest Glacier Studies. As I’ve been working on techniques to mimic glacial retreat for a few years, I feel I’m finally getting somewhere. . . . .",
+    "status": "Available",
+    "folder": "glacier-studies-blue-pools-no2",
+    "images": [
+      "main.jpg",
+      "detail-1.jpg",
+      "detail-2.jpg",
+      "detail-3.jpg"
+    ]
+  },
+  {
+    "id": "glacier-studies-blue-pools-no3",
+    "title": "Glacier studies: blue pools no.3",
+    "price": "$220",
+    "size": "8x5x1\"",
+    "description": "Experimental kiln-worked glass, mosaic, mirror.\nGlacier studies are an ongoing theme I’ve been working on. Created in May 2023 for a show at Haines Brewery, this is a partial statement from the exhibit: . . . Last summer I attended Pilchuck Glass School and it changed my life. Concentrating on sand-casting hot glass, The experience was a pivotal change in my life and artistic trajectory. Adapting techniques learned from my time there, I’ve been kiln-casting on sand, using my glass crackle experiments, refiring with metals on sand, to create my newest Glacier Studies. As I’ve been working on techniques to mimic glacial retreat for a few years, I feel I’m finally getting somewhere. . . . .",
+    "status": "Available",
+    "folder": "glacier-studies-blue-pools-no3",
+    "images": [
+      "main.jpg",
+      "detail-1.jpg"
+    ]
+  },
+  {
+    "id": "glacier-studies-blue-pools-no4",
+    "title": "Glacier studies: blue pools no.4",
+    "price": "$220",
+    "size": "8x5x1\"",
+    "description": "Experimental kiln-worked glass, mosaic, mirror.\nGlacier studies are an ongoing theme I’ve been working on. Created in May 2023 for a show at Haines Brewery, this is a partial statement from the exhibit: . . . Last summer I attended Pilchuck Glass School and it changed my life. Concentrating on sand-casting hot glass, The experience was a pivotal change in my life and artistic trajectory. Adapting techniques learned from my time there, I’ve been kiln-casting on sand, using my glass crackle experiments, refiring with metals on sand, to create my newest Glacier Studies. As I’ve been working on techniques to mimic glacial retreat for a few years, I feel I’m finally getting somewhere. . . . .",
+    "status": "Available",
+    "folder": "glacier-studies-blue-pools-no4",
+    "images": [
+      "main.jpg",
+      "detail-1.jpg",
+      "detail-2.jpg",
+      "detail-3.jpg"
+    ]
+  },
+  {
+    "id": "glacier-studies-blue-pools-no5",
+    "title": "Glacier studies: blue pools no.5",
+    "price": "$220",
+    "size": "8x5x1\"",
+    "description": "Experimental kiln-worked glass, mosaic, mirror.\nGlacier studies are an ongoing theme I’ve been working on. Created in May 2023 for a show at Haines Brewery, this is a partial statement from the exhibit: . . . Last summer I attended Pilchuck Glass School and it changed my life. Concentrating on sand-casting hot glass, The experience was a pivotal change in my life and artistic trajectory. Adapting techniques learned from my time there, I’ve been kiln-casting on sand, using my glass crackle experiments, refiring with metals on sand, to create my newest Glacier Studies. As I’ve been working on techniques to mimic glacial retreat for a few years, I feel I’m finally getting somewhere. . . . .",
+    "status": "Available",
+    "folder": "glacier-studies-blue-pools-no5",
+    "images": [
+      "main.jpg",
+      "detail-1.jpg",
+      "detail-2.jpg"
+    ]
+  },
+  {
     "id": "glacier-study-02-sawyer-glacier",
-    "title": "Glacier Study 02 Sawyer Glacier",
-    "price": "",
-    "size": "",
-    "description": "",
+    "title": "Glacier Study 02/ Sawyer Glacier",
+    "price": "$460",
+    "size": "11x8x1\"",
+    "description": "Mosaic, art glass, H2O glass.  Created in 2021 using the 'crackle technique' and copper powders fused into window glass, Glacier Study 02 depicts Sawyer Glacier and is part of my ongoing Glacier Studies series.",
     "status": "Available",
     "folder": "glacier-study-02-sawyer-glacier",
     "images": [
