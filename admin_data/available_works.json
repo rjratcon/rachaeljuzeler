@@ -1,4 +1,47 @@
 {
+  "boca-h2o-painting-no05": {
+    "id": "boca-h2o-painting-no05",
+    "title": "Boca h2o painting no.05",
+    "price": "$220",
+    "size": "6 x 9 x .5”",
+    "description": "Oil painting, mirror, plastic.\nCreated for a show at Haines Brewery in 2022, this is the partial write-up for the exhibit: \n\". . .I spent the month of March in Mexico doing something completely foreign to my artistic experience; I worked as a studio assistant at Casa de los Artistas for a series of plein air artists and teachers who specialized in oil paintings of atmosphere, palette knife and color landscapes, respectively. After looking at shapes, shadows and the water for weeks on end, I had an epiphany. . .\" \nI realized I’m not a plein air painter. \nI also realized I can paint my own thing, In this case “the essence of water” — embellished with the small pieces of plastic which came to me at the shore of la playa.",
+    "status": "Available",
+    "folder": "boca-h2o-painting-no05",
+    "images": [
+      "main.jpg",
+      "detail-1.jpg",
+      "detail-2.jpg"
+    ]
+  },
+  "boca-h2o-painting-no08": {
+    "id": "boca-h2o-painting-no08",
+    "title": "Boca h2o painting no.08",
+    "price": "$220",
+    "size": "6 x 9 x .5”",
+    "description": "Oil painting, mirror, plastic.\nCreated for a show at Haines Brewery in 2022, this is the partial write-up for the exhibit: \n\". . . I spent the month of March in Mexico doing something completely foreign to my artistic experience; I worked as a studio assistant at Casa de los Artistas for a series of plein air artists and teachers who specialized in oil paintings of atmosphere, palette knife and color landscapes, respectively. After looking at shapes, shadows and the water for weeks on end, I had an epiphany. \nI realized I’m not a plein air painter. \nI also realized I can paint my own thing, In this case “the essence of water” — embellished with the small pieces of plastic which came to me at the shore of la playa. . . .\"",
+    "status": "Available",
+    "folder": "boca-h2o-painting-no08",
+    "images": [
+      "main.jpg",
+      "detail-1.jpg",
+      "detail-2.jpg"
+    ]
+  },
+  "boca-h2o-painting-no10": {
+    "id": "boca-h2o-painting-no10",
+    "title": "Boca h2o painting no.10",
+    "price": "$220",
+    "size": "6 x 9 x .5”",
+    "description": "Oil painting, mirror, plastic.\nCreated for a show at Haines Brewery in 2022, this is the partial write-up for the exhibit: \n“. . . I spent the month of March in Mexico doing something completely foreign to my artistic experience; I worked as a studio assistant at Casa de los Artistas for a series of plein air artists and teachers who specialized in oil paintings of atmosphere, palette knife and color landscapes, respectively. After looking at shapes, shadows and the water for weeks on end, I had an epiphany. \nI realized I’m not a plein air painter. \nI also realized I can paint my own thing, In this case “the essence of water” — embellished with the small pieces of plastic which came to me at the shore of la playa. . . .”",
+    "status": "Available",
+    "folder": "boca-h2o-painting-no10",
+    "images": [
+      "main.jpg",
+      "detail-1.jpg",
+      "detail-2.jpg",
+      "detail-3.jpg"
+    ]
+  },
   "glacier-studies-blue-pools-no2": {
     "id": "glacier-studies-blue-pools-no2",
     "title": "Glacier studies: Blue pools no.2",
@@ -97,6 +140,85 @@
     "folder": "hooligan",
     "images": [
       "main.jpg"
+    ]
+  },
+  "improv-mudflats-quilt-no2": {
+    "id": "improv-mudflats-quilt-no2",
+    "title": "Improv Mudflats Quilt no.2",
+    "price": "$360",
+    "size": "10 x 8 x 1\"",
+    "description": "Kilnworked Bullseye glass mosaic. \nCreated in 2022 for my ICGA exhibit \"Trending Towards Tapestry / A Changing Epoch\" This is an excerpt from my extended artist statement:\n” . . . Improv H2O and Mudflat Quilts in glass: \nLast March I spent in Mexico studying with a variety of plein air painters. I found I am not a plein air painter but I did learn how to see in an alternative way. Studying and trying to record water –in glass rather than paint– has been my recent obsession. Studying painting in glass with Narcissus Quagliata the last few months was a catalyst. Cutting and piecing my class assignments and experiments together, I used improvisational quilts —an influence from growing up with my Grandmother quilter— as my subject matter for the works.”",
+    "status": "Available",
+    "folder": "improv-mudflats-quilt-no2",
+    "images": [
+      "main.jpg",
+      "detail-1.jpg",
+      "detail-2.jpg",
+      "detail-3.jpg"
+    ]
+  },
+  "improv-mudflats-quilt-no3": {
+    "id": "improv-mudflats-quilt-no3",
+    "title": "Improv Mudflats Quilt no.3",
+    "price": "$360",
+    "size": "10 x 8 x 1\"",
+    "description": "Kilnworked Bullseye glass mosaic. \nCreated in 2022 for my ICGA exhibit \"Trending Towards Tapestry / A Changing Epoch\" This is an excerpt from my extended artist statement:\n” . . . Improv H2O and Mudflat Quilts in glass: \nLast March I spent in Mexico studying with a variety of plein air painters. I found I am not a plein air painter but I did learn how to see in an alternative way. Studying and trying to record water –in glass rather than paint– has been my recent obsession. Studying painting in glass with Narcissus Quagliata the last few months was a catalyst. Cutting and piecing my class assignments and experiments together, I used improvisational quilts —an influence from growing up with my Grandmother quilter— as my subject matter for the works.”",
+    "status": "Available",
+    "folder": "improv-mudflats-quilt-no3",
+    "images": [
+      "main.jpg",
+      "detail-1.jpg",
+      "detail-2.jpg",
+      "detail-3.jpg"
+    ]
+  },
+  "improv-mudflats-quilt-no4": {
+    "id": "improv-mudflats-quilt-no4",
+    "title": "Improv Mudflats Quilt no.4",
+    "price": "$360",
+    "size": "10 x 8 x 1\"",
+    "description": "Kilnworked Bullseye glass mosaic. \nCreated in 2022 for my ICGA exhibit \"Trending Towards Tapestry / A Changing Epoch\" This is an excerpt from my extended artist statement:\n” . . . Improv H2O and Mudflat Quilts in glass: \nLast March I spent in Mexico studying with a variety of plein air painters. I found I am not a plein air painter but I did learn how to see in an alternative way. Studying and trying to record water –in glass rather than paint– has been my recent obsession. Studying painting in glass with Narcissus Quagliata the last few months was a catalyst. Cutting and piecing my class assignments and experiments together, I used improvisational quilts —an influence from growing up with my Grandmother quilter— as my subject matter for the works.”",
+    "status": "Available",
+    "folder": "improv-mudflats-quilt-no4",
+    "images": [
+      "main.jpg",
+      "detail-1.jpg",
+      "detail-2.jpg",
+      "detail-3.jpg"
+    ]
+  },
+  "improv-mudflats-quilt-no7": {
+    "id": "improv-mudflats-quilt-no7",
+    "title": "Improv Mudflats Quilt no.7",
+    "price": "$360",
+    "size": "10 x 8 x 1\"",
+    "description": "Kilnworked Bullseye & crushed bottle glass mosaic. \nCreated in 2022 for my ICGA exhibit \"Trending Towards Tapestry / A Changing Epoch\" This is an excerpt from my extended artist statement:\n” . . . Improv H2O and Mudflat Quilts in glass: \nLast March I spent in Mexico studying with a variety of plein air painters. I found I am not a plein air painter but I did learn how to see in an alternative way. Studying and trying to record water –in glass rather than paint– has been my recent obsession. Studying painting in glass with Narcissus Quagliata the last few months was a catalyst. Cutting and piecing my class assignments and experiments together, I used improvisational quilts —an influence from growing up with my Grandmother quilter— as my subject matter for the works.”",
+    "status": "Available",
+    "folder": "improv-mudflats-quilt-no7",
+    "images": [
+      "main.jpg",
+      "detail-1.jpg",
+      "detail-2.jpg"
+    ]
+  },
+  "salt-dishes-sea-salt": {
+    "id": "salt-dishes-sea-salt",
+    "title": "Salt Dishes +sea salt",
+    "price": "$20 (art glass) / $15 (reclaimed glass)",
+    "size": "approx. 2.5 x 3 x .75”",
+    "description": "These Salt dishes were created for various markets I’ve participated in. Each are kiln-worked glass.\nThe purple and green dishes are made with Bullseye art glass, the blue are reclaimed window glass with a touch of art glass powder for tint. Each is kiln-worked and fully annealed for strength. Includes 2oz. of sea salt.",
+    "status": "Available",
+    "folder": "salt-dishes-sea-salt",
+    "images": [
+      "main.jpg",
+      "detail-1.jpg",
+      "detail-2.jpg",
+      "detail-3.jpg",
+      "detail-4.jpg",
+      "detail-5.jpg",
+      "detail-6.jpg",
+      "detail-7.jpg",
+      "detail-8.jpg"
     ]
   }
 }
