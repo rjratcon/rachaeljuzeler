@@ -28,11 +28,12 @@ class RachaelContentManager:
         self.index_html = self.project_dir / "index.html"
         self.about_html = self.project_dir / "about.html"
         self.contact_html = self.project_dir / "contact.html"
-        self.updates_html = self.project_dir / "updates.html"
+        self.news_html = self.project_dir / "updates.html"
         self.available_html = self.project_dir / "available.html"
         self.available_detail_html = self.project_dir / "available-piece.html"
         self.project_html = self.project_dir / "project.html"
         self.script_js = self.project_dir / "script.js"
+        self.news_data_js = self.project_dir / "news-data.js"
         self.available_data_js = self.project_dir / "available-data.js"
         self.sitemap_xml = self.project_dir / "sitemap.xml"
 
@@ -41,7 +42,7 @@ class RachaelContentManager:
         self.data_dir.mkdir(exist_ok=True)
         self.projects_data_file = self.data_dir / "projects.json"
         self.cv_data_file = self.data_dir / "cv_sections.json"
-        self.updates_data_file = self.data_dir / "updates.json"
+        self.news_data_file = self.data_dir / "news.json"
         self.available_data_file = self.data_dir / "available_works.json"
         self.contact_data_file = self.data_dir / "contact_info.json"
 
@@ -59,6 +60,7 @@ class RachaelContentManager:
 
         # Initialize tracking variables
         self.current_project_id = None
+        self.current_news_id = None
         self.current_available_id = None
         self.edit_image_paths = []
         self.new_image_paths = []
@@ -129,7 +131,7 @@ class RachaelContentManager:
         # Create tabs
         self.create_projects_tab(notebook)
         self.create_cv_tab(notebook)
-        self.create_updates_tab(notebook)
+        self.create_news_tab(notebook)
         self.create_contact_tab(notebook)
         self.create_available_tab(notebook)
 
@@ -438,98 +440,178 @@ class RachaelContentManager:
                  bg='#000000', fg='#786E00',
                  font=('EB Garamond', 11, 'bold')).pack(pady=10)
 
-    def create_updates_tab(self, notebook):
-        """Create updates management tab"""
+    def create_news_tab(self, notebook):
+        """Create news management tab"""
         frame = tk.Frame(notebook, bg='#786E00')
-        notebook.add(frame, text='UPDATES')
+        notebook.add(frame, text='NEWS')
 
         # Title
-        tk.Label(frame, text="Manage Updates",
+        tk.Label(frame, text="Manage News",
                 font=('EB Garamond', 16, 'bold'),
                 bg='#786E00', fg='#000000').pack(pady=10)
 
-        # Edit existing updates
-        edit_frame = tk.LabelFrame(frame, text="Edit Existing Update",
+        # Edit existing news items
+        edit_frame = tk.LabelFrame(frame, text="Edit Existing News Item",
                                   bg='#786E00', fg='#000000',
                                   font=('EB Garamond', 12, 'bold'))
         edit_frame.pack(fill='x', padx=20, pady=10)
 
-        tk.Label(edit_frame, text="Select Update:",
+        tk.Label(edit_frame, text="Select News Item:",
                 font=('EB Garamond', 10, 'bold'),
                 bg='#786E00', fg='#000000').pack(anchor='w', padx=10, pady=(10,0))
-        self.update_select = ttk.Combobox(edit_frame, width=60,
-                                         font=('EB Garamond', 10))
-        self.update_select.pack(pady=5, padx=10)
-        self.update_select.bind('<<ComboboxSelected>>', self.on_update_selected)
+        self.news_select = ttk.Combobox(edit_frame, width=60,
+                                        font=('EB Garamond', 10),
+                                        state='readonly')
+        self.news_select.pack(pady=5, padx=10)
+        self.news_select.bind('<<ComboboxSelected>>', self.on_news_selected)
 
-        tk.Label(edit_frame, text="Update Title:",
-                font=('EB Garamond', 10, 'bold'),
-                bg='#786E00', fg='#000000').pack(anchor='w', padx=10, pady=(10,0))
-        self.edit_update_title = tk.Entry(edit_frame, width=60, font=('EB Garamond', 10),
-                                         bg='#786E00', fg='#000000', insertbackground='#000000')
-        self.edit_update_title.pack(pady=5, padx=10)
+        self.news_editing_label = tk.Label(
+            edit_frame,
+            text="No news item selected",
+            font=('EB Garamond', 10, 'italic'),
+            bg='#786E00',
+            fg='#333333'
+        )
+        self.news_editing_label.pack(anchor='w', padx=10, pady=(0, 10))
 
-        tk.Label(edit_frame, text="Content:",
+        tk.Label(edit_frame, text="Title:",
                 font=('EB Garamond', 10, 'bold'),
                 bg='#786E00', fg='#000000').pack(anchor='w', padx=10, pady=(10,0))
-        self.edit_update_content = scrolledtext.ScrolledText(edit_frame, width=60, height=4,
-                                                            font=('EB Garamond', 10),
-                                                            bg='#786E00', fg='#000000',
-                                                            insertbackground='#000000')
-        self.edit_update_content.pack(pady=5, padx=10)
-
-        tk.Label(edit_frame, text="Link (optional):",
-                font=('EB Garamond', 10, 'bold'),
-                bg='#786E00', fg='#000000').pack(anchor='w', padx=10, pady=(10,0))
-        self.edit_update_link = tk.Entry(edit_frame, width=60, font=('EB Garamond', 10),
+        self.edit_news_title = tk.Entry(edit_frame, width=60, font=('EB Garamond', 10),
                                         bg='#786E00', fg='#000000', insertbackground='#000000')
-        self.edit_update_link.pack(pady=5, padx=10)
+        self.edit_news_title.pack(pady=5, padx=10)
+
+        tk.Label(edit_frame, text="One-Sentence Intro:",
+                font=('EB Garamond', 10, 'bold'),
+                bg='#786E00', fg='#000000').pack(anchor='w', padx=10, pady=(10,0))
+        self.edit_news_intro = scrolledtext.ScrolledText(edit_frame, width=60, height=4,
+                                                         font=('EB Garamond', 10),
+                                                         bg='#786E00', fg='#000000',
+                                                         insertbackground='#000000')
+        self.edit_news_intro.pack(pady=5, padx=10)
+
+        tk.Label(edit_frame, text="Link URL:",
+                font=('EB Garamond', 10, 'bold'),
+                bg='#786E00', fg='#000000').pack(anchor='w', padx=10, pady=(10,0))
+        self.edit_news_url = tk.Entry(edit_frame, width=60, font=('EB Garamond', 10),
+                                      bg='#786E00', fg='#000000', insertbackground='#000000')
+        self.edit_news_url.pack(pady=5, padx=10)
+
+        tk.Label(edit_frame, text="Source:",
+                font=('EB Garamond', 10, 'bold'),
+                bg='#786E00', fg='#000000').pack(anchor='w', padx=10, pady=(10,0))
+        self.edit_news_source = tk.Entry(edit_frame, width=60, font=('EB Garamond', 10),
+                                         bg='#786E00', fg='#000000', insertbackground='#000000')
+        self.edit_news_source.pack(pady=5, padx=10)
+
+        tk.Label(edit_frame, text="Category:",
+                font=('EB Garamond', 10, 'bold'),
+                bg='#786E00', fg='#000000').pack(anchor='w', padx=10, pady=(10,0))
+        self.edit_news_category = tk.Entry(edit_frame, width=60, font=('EB Garamond', 10),
+                                           bg='#786E00', fg='#000000', insertbackground='#000000')
+        self.edit_news_category.pack(pady=5, padx=10)
+
+        tk.Label(edit_frame, text="Year or Date Label (optional):",
+                font=('EB Garamond', 10, 'bold'),
+                bg='#786E00', fg='#000000').pack(anchor='w', padx=10, pady=(10,0))
+        self.edit_news_year = tk.Entry(edit_frame, width=60, font=('EB Garamond', 10),
+                                       bg='#786E00', fg='#000000', insertbackground='#000000')
+        self.edit_news_year.pack(pady=5, padx=10)
+
+        tk.Label(edit_frame, text="Preview Image URL (optional):",
+                font=('EB Garamond', 10, 'bold'),
+                bg='#786E00', fg='#000000').pack(anchor='w', padx=10, pady=(10,0))
+        self.edit_news_image = tk.Entry(edit_frame, width=60, font=('EB Garamond', 10),
+                                        bg='#786E00', fg='#000000', insertbackground='#000000')
+        self.edit_news_image.pack(pady=5, padx=10)
+
+        tk.Label(edit_frame, text="Button Label (optional):",
+                font=('EB Garamond', 10, 'bold'),
+                bg='#786E00', fg='#000000').pack(anchor='w', padx=10, pady=(10,0))
+        self.edit_news_link_label = tk.Entry(edit_frame, width=60, font=('EB Garamond', 10),
+                                             bg='#786E00', fg='#000000', insertbackground='#000000')
+        self.edit_news_link_label.pack(pady=5, padx=10)
 
         # Update buttons
         edit_btn_frame = tk.Frame(edit_frame, bg='#786E00')
         edit_btn_frame.pack(pady=10)
 
-        tk.Button(edit_btn_frame, text="Update",
-                 command=self.update_update,
+        tk.Button(edit_btn_frame, text="Update News",
+                 command=self.update_news_item,
                  bg='#000000', fg='#786E00',
                  font=('EB Garamond', 11, 'bold')).pack(side='left', padx=5)
 
-        tk.Button(edit_btn_frame, text="Delete",
-                 command=self.delete_update,
+        tk.Button(edit_btn_frame, text="Delete News",
+                 command=self.delete_news_item,
                  bg='#8B0000', fg='#FFFFFF',  # Dark red
                  font=('EB Garamond', 11, 'bold')).pack(side='left', padx=5)
 
-        # Add new update
-        new_frame = tk.LabelFrame(frame, text="Add New Update",
+        # Add new news item
+        new_frame = tk.LabelFrame(frame, text="Add New News Item",
                                  bg='#786E00', fg='#000000',
                                  font=('EB Garamond', 12, 'bold'))
         new_frame.pack(fill='x', padx=20, pady=10)
 
-        tk.Label(new_frame, text="Update Title:",
+        tk.Label(new_frame, text="Title:",
                 font=('EB Garamond', 10, 'bold'),
                 bg='#786E00', fg='#000000').pack(anchor='w', padx=10, pady=(10,0))
-        self.new_update_title = tk.Entry(new_frame, width=60, font=('EB Garamond', 10),
-                                        bg='#786E00', fg='#000000', insertbackground='#000000')
-        self.new_update_title.pack(pady=5, padx=10)
-
-        tk.Label(new_frame, text="Content:",
-                font=('EB Garamond', 10, 'bold'),
-                bg='#786E00', fg='#000000').pack(anchor='w', padx=10, pady=(10,0))
-        self.new_update_content = scrolledtext.ScrolledText(new_frame, width=60, height=4,
-                                                           font=('EB Garamond', 10),
-                                                           bg='#786E00', fg='#000000',
-                                                           insertbackground='#000000')
-        self.new_update_content.pack(pady=5, padx=10)
-
-        tk.Label(new_frame, text="Link (optional):",
-                font=('EB Garamond', 10, 'bold'),
-                bg='#786E00', fg='#000000').pack(anchor='w', padx=10, pady=(10,0))
-        self.new_update_link = tk.Entry(new_frame, width=60, font=('EB Garamond', 10),
+        self.new_news_title = tk.Entry(new_frame, width=60, font=('EB Garamond', 10),
                                        bg='#786E00', fg='#000000', insertbackground='#000000')
-        self.new_update_link.pack(pady=5, padx=10)
+        self.new_news_title.pack(pady=5, padx=10)
 
-        tk.Button(new_frame, text="Add Update",
-                 command=self.create_update,
+        tk.Label(new_frame, text="One-Sentence Intro:",
+                font=('EB Garamond', 10, 'bold'),
+                bg='#786E00', fg='#000000').pack(anchor='w', padx=10, pady=(10,0))
+        self.new_news_intro = scrolledtext.ScrolledText(new_frame, width=60, height=4,
+                                                        font=('EB Garamond', 10),
+                                                        bg='#786E00', fg='#000000',
+                                                        insertbackground='#000000')
+        self.new_news_intro.pack(pady=5, padx=10)
+
+        tk.Label(new_frame, text="Link URL:",
+                font=('EB Garamond', 10, 'bold'),
+                bg='#786E00', fg='#000000').pack(anchor='w', padx=10, pady=(10,0))
+        self.new_news_url = tk.Entry(new_frame, width=60, font=('EB Garamond', 10),
+                                     bg='#786E00', fg='#000000', insertbackground='#000000')
+        self.new_news_url.pack(pady=5, padx=10)
+
+        tk.Label(new_frame, text="Source:",
+                font=('EB Garamond', 10, 'bold'),
+                bg='#786E00', fg='#000000').pack(anchor='w', padx=10, pady=(10,0))
+        self.new_news_source = tk.Entry(new_frame, width=60, font=('EB Garamond', 10),
+                                        bg='#786E00', fg='#000000', insertbackground='#000000')
+        self.new_news_source.pack(pady=5, padx=10)
+
+        tk.Label(new_frame, text="Category:",
+                font=('EB Garamond', 10, 'bold'),
+                bg='#786E00', fg='#000000').pack(anchor='w', padx=10, pady=(10,0))
+        self.new_news_category = tk.Entry(new_frame, width=60, font=('EB Garamond', 10),
+                                          bg='#786E00', fg='#000000', insertbackground='#000000')
+        self.new_news_category.pack(pady=5, padx=10)
+
+        tk.Label(new_frame, text="Year or Date Label (optional):",
+                font=('EB Garamond', 10, 'bold'),
+                bg='#786E00', fg='#000000').pack(anchor='w', padx=10, pady=(10,0))
+        self.new_news_year = tk.Entry(new_frame, width=60, font=('EB Garamond', 10),
+                                      bg='#786E00', fg='#000000', insertbackground='#000000')
+        self.new_news_year.pack(pady=5, padx=10)
+
+        tk.Label(new_frame, text="Preview Image URL (optional):",
+                font=('EB Garamond', 10, 'bold'),
+                bg='#786E00', fg='#000000').pack(anchor='w', padx=10, pady=(10,0))
+        self.new_news_image = tk.Entry(new_frame, width=60, font=('EB Garamond', 10),
+                                       bg='#786E00', fg='#000000', insertbackground='#000000')
+        self.new_news_image.pack(pady=5, padx=10)
+
+        tk.Label(new_frame, text="Button Label (optional):",
+                font=('EB Garamond', 10, 'bold'),
+                bg='#786E00', fg='#000000').pack(anchor='w', padx=10, pady=(10,0))
+        self.new_news_link_label = tk.Entry(new_frame, width=60, font=('EB Garamond', 10),
+                                            bg='#786E00', fg='#000000', insertbackground='#000000')
+        self.new_news_link_label.pack(pady=5, padx=10)
+
+        tk.Button(new_frame, text="Add News Item",
+                 command=self.create_news_item,
                  bg='#000000', fg='#786E00',
                  font=('EB Garamond', 12, 'bold')).pack(pady=15)
 
@@ -1291,6 +1373,10 @@ class RachaelContentManager:
         project_names = [f"{pid}: {data['title']}" for pid, data in self.projects_data.items()]
         self.project_select['values'] = project_names
 
+        # Load news data and refresh related files
+        self.load_news_data()
+        self.sync_news_outputs()
+
         # Load available works data and refresh related files
         self.load_available_data()
         self.sync_available_outputs()
@@ -1344,6 +1430,124 @@ class RachaelContentManager:
         with open(self.projects_data_file, 'w') as f:
             json.dump(self.projects_data, f, indent=2)
 
+    def normalize_news_item(self, item_id, item):
+        """Normalize a news record to the fields used by the site"""
+        if not isinstance(item, dict):
+            item = {}
+
+        return {
+            'id': item.get('id', item_id),
+            'title': item.get('title', '').strip(),
+            'intro': item.get('intro', '').strip(),
+            'url': item.get('url', '').strip(),
+            'source': item.get('source', '').strip(),
+            'category': item.get('category', '').strip(),
+            'year': item.get('year', '').strip(),
+            'image': item.get('image', '').strip(),
+            'linkLabel': item.get('linkLabel', '').strip()
+        }
+
+    def load_news_data(self):
+        """Load news data from JSON"""
+        self.news_data = {}
+
+        if not self.news_data_file.exists():
+            return
+
+        try:
+            with open(self.news_data_file, 'r', encoding='utf-8') as f:
+                stored_data = json.load(f)
+        except Exception as e:
+            print(f"Error loading news data: {e}")
+            return
+
+        if isinstance(stored_data, list):
+            for index, item in enumerate(stored_data, start=1):
+                if not isinstance(item, dict):
+                    continue
+                item_id = item.get('id') or self.slugify(item.get('title', '')) or f"news-{index}"
+                self.news_data[item_id] = self.normalize_news_item(item_id, item)
+        elif isinstance(stored_data, dict):
+            for item_id, item in stored_data.items():
+                self.news_data[item_id] = self.normalize_news_item(item_id, item)
+
+    def save_news_data(self):
+        """Persist news data to JSON"""
+        with open(self.news_data_file, 'w', encoding='utf-8') as f:
+            json.dump(self.news_data, f, indent=2, ensure_ascii=False)
+
+    def generate_news_data_js(self):
+        """Generate the frontend data file used by the News page"""
+        items = []
+        for item_id, item in self.news_data.items():
+            normalized = self.normalize_news_item(item_id, item)
+            normalized['id'] = item_id
+            items.append(normalized)
+
+        content = "window.newsItems = " + json.dumps(items, indent=2, ensure_ascii=False) + ";\n"
+        with open(self.news_data_js, 'w', encoding='utf-8') as f:
+            f.write(content)
+
+    def refresh_news_dropdown(self):
+        """Refresh the combobox choices for news entries"""
+        self.news_select['values'] = [f"{item_id}: {item.get('title', item_id)}" for item_id, item in self.news_data.items()]
+
+    def sync_news_outputs(self):
+        """Save news data, rebuild the frontend file, and refresh related UI"""
+        normalized_items = {}
+        for item_id, item in self.news_data.items():
+            normalized_items[item_id] = self.normalize_news_item(item_id, item)
+
+        self.news_data = normalized_items
+        self.save_news_data()
+        self.generate_news_data_js()
+        self.regenerate_sitemap()
+        self.refresh_news_dropdown()
+
+    def populate_news_form(self, item_id):
+        """Load a news item into the edit form"""
+        item = self.news_data.get(item_id)
+        if not item:
+            return
+
+        self.current_news_id = item_id
+        self.news_editing_label.config(text=f"Currently editing: {item.get('title', item_id)} ({item_id})")
+
+        self.edit_news_title.delete(0, tk.END)
+        self.edit_news_title.insert(0, item.get('title', ''))
+
+        self.edit_news_intro.delete('1.0', tk.END)
+        self.edit_news_intro.insert('1.0', item.get('intro', ''))
+
+        self.edit_news_url.delete(0, tk.END)
+        self.edit_news_url.insert(0, item.get('url', ''))
+
+        self.edit_news_source.delete(0, tk.END)
+        self.edit_news_source.insert(0, item.get('source', ''))
+
+        self.edit_news_category.delete(0, tk.END)
+        self.edit_news_category.insert(0, item.get('category', ''))
+
+        self.edit_news_year.delete(0, tk.END)
+        self.edit_news_year.insert(0, item.get('year', ''))
+
+        self.edit_news_image.delete(0, tk.END)
+        self.edit_news_image.insert(0, item.get('image', ''))
+
+        self.edit_news_link_label.delete(0, tk.END)
+        self.edit_news_link_label.insert(0, item.get('linkLabel', ''))
+
+    def clear_news_form(self):
+        """Clear the add-news fields after a successful save"""
+        self.new_news_title.delete(0, tk.END)
+        self.new_news_intro.delete('1.0', tk.END)
+        self.new_news_url.delete(0, tk.END)
+        self.new_news_source.delete(0, tk.END)
+        self.new_news_category.delete(0, tk.END)
+        self.new_news_year.delete(0, tk.END)
+        self.new_news_image.delete(0, tk.END)
+        self.new_news_link_label.delete(0, tk.END)
+
     def on_project_selected(self, event):
         """Handle project selection and populate form fields with existing data"""
         selection = self.project_select.get()
@@ -1378,10 +1582,14 @@ class RachaelContentManager:
         # Placeholder - would load CV data
         pass
 
-    def on_update_selected(self, event):
-        """Handle update selection"""
-        # Placeholder - would load update data
-        pass
+    def on_news_selected(self, event):
+        """Handle news selection"""
+        selection = self.news_select.get()
+        if not selection:
+            return
+
+        item_id = selection.split(':')[0]
+        self.populate_news_form(item_id)
 
     def on_available_selected(self, event):
         """Handle available work selection"""
@@ -1608,17 +1816,133 @@ class RachaelContentManager:
         """Update CV section"""
         messagebox.showinfo("Info", "Update CV section functionality would be implemented here")
 
-    def create_update(self):
-        """Create new update"""
-        messagebox.showinfo("Info", "Create update functionality would be implemented here")
+    def create_news_item(self):
+        """Create a new news item"""
+        title = self.new_news_title.get().strip()
+        intro = self.new_news_intro.get('1.0', 'end-1c').strip()
+        url = self.new_news_url.get().strip()
+        source = self.new_news_source.get().strip()
+        category = self.new_news_category.get().strip()
+        year = self.new_news_year.get().strip()
+        image = self.new_news_image.get().strip()
+        link_label = self.new_news_link_label.get().strip()
 
-    def update_update(self):
-        """Update existing update"""
-        messagebox.showinfo("Info", "Update update functionality would be implemented here")
+        if not title or not intro or not url:
+            messagebox.showerror("Error", "Please enter a title, intro, and link URL.")
+            return
 
-    def delete_update(self):
-        """Delete update"""
-        messagebox.showinfo("Info", "Delete update functionality would be implemented here")
+        item_id = self.slugify(title) or f"news-{len(self.news_data) + 1}"
+        if item_id in self.news_data:
+            messagebox.showerror("Error", "A news item with this title already exists. Please use a different title.")
+            return
+
+        self.news_data[item_id] = self.normalize_news_item(item_id, {
+            'id': item_id,
+            'title': title,
+            'intro': intro,
+            'url': url,
+            'source': source,
+            'category': category,
+            'year': year,
+            'image': image,
+            'linkLabel': link_label
+        })
+
+        self.sync_news_outputs()
+        self.clear_news_form()
+        self.news_select.set(f"{item_id}: {title}")
+        self.populate_news_form(item_id)
+        messagebox.showinfo("Success", f"Added '{title}' to News.")
+
+    def update_news_item(self):
+        """Update an existing news item"""
+        if not self.current_news_id:
+            messagebox.showerror("Error", "Please select a news item to update.")
+            return
+
+        title = self.edit_news_title.get().strip()
+        intro = self.edit_news_intro.get('1.0', 'end-1c').strip()
+        url = self.edit_news_url.get().strip()
+        source = self.edit_news_source.get().strip()
+        category = self.edit_news_category.get().strip()
+        year = self.edit_news_year.get().strip()
+        image = self.edit_news_image.get().strip()
+        link_label = self.edit_news_link_label.get().strip()
+
+        if not title or not intro or not url:
+            messagebox.showerror("Error", "Please enter a title, intro, and link URL.")
+            return
+
+        new_item_id = self.slugify(title) or self.current_news_id
+        if new_item_id != self.current_news_id and new_item_id in self.news_data:
+            messagebox.showerror("Error", "Another news item already uses this title. Please choose a different title.")
+            return
+
+        updated_item = self.normalize_news_item(new_item_id, {
+            'id': new_item_id,
+            'title': title,
+            'intro': intro,
+            'url': url,
+            'source': source,
+            'category': category,
+            'year': year,
+            'image': image,
+            'linkLabel': link_label
+        })
+
+        if new_item_id != self.current_news_id:
+            items = list(self.news_data.items())
+            rebuilt = {}
+            for item_id, item in items:
+                if item_id == self.current_news_id:
+                    rebuilt[new_item_id] = updated_item
+                else:
+                    rebuilt[item_id] = item
+            self.news_data = rebuilt
+            self.current_news_id = new_item_id
+        else:
+            self.news_data[self.current_news_id] = updated_item
+
+        self.sync_news_outputs()
+        self.news_select.set(f"{self.current_news_id}: {title}")
+        self.populate_news_form(self.current_news_id)
+        messagebox.showinfo("Success", f"Updated '{title}'.")
+
+    def delete_news_item(self):
+        """Delete a news item"""
+        if not self.current_news_id:
+            messagebox.showerror("Error", "Please select a news item to delete.")
+            return
+
+        item = self.news_data.get(self.current_news_id)
+        if not item:
+            messagebox.showerror("Error", "Selected news item could not be found.")
+            return
+
+        result = messagebox.askyesno(
+            "Delete News Item",
+            f"Delete '{item.get('title', '')}' from the News page?",
+            icon='warning'
+        )
+
+        if not result:
+            return
+
+        deleted_title = item.get('title', self.current_news_id)
+        del self.news_data[self.current_news_id]
+        self.current_news_id = None
+        self.news_select.set('')
+        self.news_editing_label.config(text="No news item selected")
+        self.edit_news_title.delete(0, tk.END)
+        self.edit_news_intro.delete('1.0', tk.END)
+        self.edit_news_url.delete(0, tk.END)
+        self.edit_news_source.delete(0, tk.END)
+        self.edit_news_category.delete(0, tk.END)
+        self.edit_news_year.delete(0, tk.END)
+        self.edit_news_image.delete(0, tk.END)
+        self.edit_news_link_label.delete(0, tk.END)
+        self.sync_news_outputs()
+        messagebox.showinfo("Success", f"Deleted '{deleted_title}'.")
 
     def update_contact(self):
         """Update contact information"""

@@ -1,0 +1,90 @@
+{
+  "hammer-museum": {
+    "id": "hammer-museum",
+    "title": "Framed Glass Hammer at the Hammer Museum",
+    "intro": "The Hammer Museum features Rachael Juzeler's Framed Glass Hammer as part of its playful and wide-ranging art collection.",
+    "url": "https://www.hammermuseum.org/art/framed-glass-hammer-by-rachel-juzeler/",
+    "source": "Hammer Museum",
+    "category": "Museum Feature",
+    "year": "",
+    "image": "https://www.hammermuseum.org/wp-content/uploads/2024/03/IMG_1262.jpg.webp",
+    "linkLabel": "Visit feature"
+  },
+  "bunnell-2017": {
+    "id": "bunnell-2017",
+    "title": "Rachael Juzeler Exhibit, December 2017",
+    "intro": "This updated Bunnell Street Arts Center post documents the December 2017 exhibit with installation photos from the show.",
+    "url": "https://www.bunnellarts.org/rachael-juzeler-exhibit-december-2017-2/",
+    "source": "Bunnell Street Arts Center",
+    "category": "Exhibition",
+    "year": "2017",
+    "image": "https://www.bunnellarts.org/wp-content/uploads/2017_Exh_Juzeler1.jpg",
+    "linkLabel": "See exhibit"
+  },
+  "rasmuson-ak-art-fund": {
+    "id": "rasmuson-ak-art-fund",
+    "title": "AK Art Fund Works, 2010-2012",
+    "intro": "Rasmuson Foundation's artist page highlights work supported through the AK Art Fund from 2010 through 2012.",
+    "url": "https://rasmuson.org/people/rachael-juzeler/",
+    "source": "Rasmuson Foundation",
+    "category": "Grant Support",
+    "year": "2010-2012",
+    "image": "https://rasmuson.org/wp-content/uploads/2016/04/rachael_juzuler_filescutth.jpg",
+    "linkLabel": "View artist page"
+  },
+  "igca-2022": {
+    "id": "igca-2022",
+    "title": "Trending Towards Tapestry / A Changing Epoch",
+    "intro": "IGCA's exhibition feature introduces a 2022 show centered on glass, mosaic, plastics, and creative reuse.",
+    "url": "https://www.igcaalaska.org/blog/2022/8/15/trending-towards-tapestry-a-changing-epoch-rachael-juzeler",
+    "source": "International Gallery of Contemporary Art",
+    "category": "Exhibition",
+    "year": "2022",
+    "image": "https://images.squarespace-cdn.com/content/v1/54ad6c18e4b07985e3863972/7ff69146-983e-4b00-848d-78bf3138ad95/Rachael+Juzeler.jpg?format=2500w",
+    "linkLabel": "Read feature"
+  },
+  "ktoo-2018": {
+    "id": "ktoo-2018",
+    "title": "The Art of Rachael Juzeler",
+    "intro": "This KTOO interview shares Rachael Juzeler's voice and perspective in conversation about her art practice.",
+    "url": "https://www.ktoo.org/2018/10/26/the-art-of-rachael-juzeler/",
+    "source": "KTOO",
+    "category": "Interview",
+    "year": "2018",
+    "image": "images/rjuzeler.jpg",
+    "linkLabel": "Listen to interview"
+  },
+  "youtube-favorite-things": {
+    "id": "youtube-favorite-things",
+    "title": "Favorite Things Art Show",
+    "intro": "A short video look at the Favorite Things Art Show and the work on view.",
+    "url": "https://youtu.be/By2IUpTdTwY?si=51ybUp6-gvN4UpNX",
+    "source": "YouTube",
+    "category": "Video",
+    "year": "",
+    "image": "https://img.youtube.com/vi/By2IUpTdTwY/hqdefault.jpg",
+    "linkLabel": "Watch video"
+  },
+  "youtube-pandemics-artworks": {
+    "id": "youtube-pandemics-artworks",
+    "title": "Pandemics Artworks",
+    "intro": "A video feature focused on the Pandemics artworks and their presentation.",
+    "url": "https://youtu.be/WK1MoxZtED4?si=ByRxIizWm-CqHP_V",
+    "source": "YouTube",
+    "category": "Video",
+    "year": "",
+    "image": "https://img.youtube.com/vi/WK1MoxZtED4/hqdefault.jpg",
+    "linkLabel": "Watch video"
+  },
+  "buy-alaska": {
+    "id": "buy-alaska",
+    "title": "Ratchet Construct, LLC on Buy Alaska",
+    "intro": "Buy Alaska's business listing spotlights Ratchet Construct, LLC and Rachael Juzeler's creative-reuse practice.",
+    "url": "https://buyalaska.com/akbusinesses/ratchet-construct-llc/",
+    "source": "Buy Alaska",
+    "category": "Directory",
+    "year": "",
+    "image": "https://buyalaska.com/wp-content/uploads/2026/04/ReConstructed-ReFuse-panel-5_8-detail.jpg",
+    "linkLabel": "View listing"
+  }
+}

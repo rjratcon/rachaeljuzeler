@@ -3,17 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Updates | Rachael Juzeler News and Exhibitions</title>
-    <meta name="description" content="Follow exhibition news, studio updates, and announcements from artist Rachael Juzeler.">
+    <title>News | Rachael Juzeler Press, Exhibitions, and Features</title>
+    <meta name="description" content="Browse news, exhibitions, interviews, videos, and features about artist Rachael Juzeler.">
     <link rel="canonical" href="https://rachaeljuzeler.com/updates.html">
     <meta property="og:type" content="website">
-    <meta property="og:title" content="Updates | Rachael Juzeler News and Exhibitions">
-    <meta property="og:description" content="Follow exhibition news, studio updates, and announcements from artist Rachael Juzeler.">
+    <meta property="og:title" content="News | Rachael Juzeler Press, Exhibitions, and Features">
+    <meta property="og:description" content="Browse news, exhibitions, interviews, videos, and features about artist Rachael Juzeler.">
     <meta property="og:url" content="https://rachaeljuzeler.com/updates.html">
     <meta property="og:image" content="https://rachaeljuzeler.com/images/rjuzeler.jpg">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Updates | Rachael Juzeler News and Exhibitions">
-    <meta name="twitter:description" content="Follow exhibition news, studio updates, and announcements from artist Rachael Juzeler.">
+    <meta name="twitter:title" content="News | Rachael Juzeler Press, Exhibitions, and Features">
+    <meta name="twitter:description" content="Browse news, exhibitions, interviews, videos, and features about artist Rachael Juzeler.">
     <meta name="twitter:image" content="https://rachaeljuzeler.com/images/rjuzeler.jpg">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -21,7 +21,6 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <!-- FIXED HEADER -->
     <header>
         <div class="header-title">
             <div class="artist-name">RACHAEL JUZELER</div>
@@ -31,49 +30,29 @@
             <ul>
                 <li><a href="index.html">WORK</a></li>
                 <li><a href="about.html">ABOUT/CV</a></li>
-                <li><a href="updates.html" class="active">UPDATES</a></li>
+                <li><a href="updates.html" class="active">NEWS</a></li>
                 <li><a href="contact.html">CONTACT</a></li>
                 <li><a href="available.html">AVAILABLE</a></li>
             </ul>
         </nav>
     </header>
 
-    <!-- MAIN CONTENT -->
     <main>
         <div class="content-page">
-            <div class="updates-container">
-                <div class="updates-box">
-                    <div class="updates-header">
-                        <h1>Updates</h1>
-                        <p class="updates-description">News, exhibitions, and studio notes from Rachael Juzeler.</p>
-                    </div>
-
-                    <div class="updates-content">
-                        <div class="update-item placeholder">
-                            <p class="placeholder-text">Future updates will appear here...</p>
-                        </div>
-                        <div class="update-item">
-                            <h3>WTWMTR</h3>
-                        </div>
-
-                        <div class="update-item">
-                            <h3>Beach Clean</h3>
-                        </div>
-
-                        <div class="update-item">
-                            <h3>YouTube Videos</h3>
-                        </div>
-
-                        <div class="update-item">
-                            <h3>Press Releases</h3>
-                        </div>
+            <section class="news-page">
+                <div class="news-page-header">
+                    <p class="news-kicker">PRESS | EXHIBITIONS | FEATURES</p>
+                    <h1>News</h1>
+                    <div class="news-blurb">
+                        <p class="news-description">A growing archive of interviews, exhibition writeups, videos, and public-facing features connected to Rachael Juzeler's work.</p>
                     </div>
                 </div>
-            </div>
+
+                <div id="news-grid" class="news-grid" aria-live="polite"></div>
+            </section>
         </div>
     </main>
 
-    <!-- FIXED FOOTER -->
     <footer>
         <div class="footer-content">
             <div class="footer-email left">
@@ -92,6 +71,96 @@
         </div>
     </footer>
 
+    <script src="news-data.js"></script>
+    <script>
+        (function renderNews() {
+            const items = Array.isArray(window.newsItems) ? window.newsItems : [];
+            const grid = document.getElementById("news-grid");
+
+            if (!grid) {
+                return;
+            }
+
+            if (!items.length) {
+                const empty = document.createElement("div");
+                empty.className = "news-empty";
+                empty.textContent = "News links will appear here soon.";
+                grid.appendChild(empty);
+                return;
+            }
+
+            items.forEach((item, index) => {
+                const card = document.createElement("article");
+                card.className = "news-card";
+                card.style.animationDelay = `${0.08 * index}s`;
+
+                const link = document.createElement("a");
+                link.className = "news-card-link";
+                link.href = item.url || "#";
+                link.target = "_blank";
+                link.rel = "noopener noreferrer";
+                link.setAttribute("aria-label", `${item.title} (${item.source || "External link"})`);
+
+                const media = document.createElement("div");
+                media.className = "news-card-media has-image";
+
+                const image = document.createElement("img");
+                image.src = item.image || "images/rjuzeler.jpg";
+                image.alt = item.title || "News preview image";
+                image.loading = "lazy";
+                image.referrerPolicy = "no-referrer";
+                image.addEventListener("error", () => {
+                    image.src = "images/rjuzeler.jpg";
+                    media.classList.add("is-fallback-image");
+                }, { once: true });
+                media.appendChild(image);
+
+                const mediaBadge = document.createElement("div");
+                mediaBadge.className = "news-card-media-badge";
+
+                const category = document.createElement("span");
+                category.className = "news-card-media-category";
+                category.textContent = item.category || "News";
+
+                const source = document.createElement("span");
+                source.className = "news-card-media-source";
+                source.textContent = item.source || "Rachael Juzeler";
+
+                mediaBadge.appendChild(category);
+                mediaBadge.appendChild(source);
+                media.appendChild(mediaBadge);
+
+                const body = document.createElement("div");
+                body.className = "news-card-body";
+
+                const meta = document.createElement("div");
+                meta.className = "news-card-meta";
+                meta.textContent = item.year ? `${item.source || "News"} | ${item.year}` : (item.source || "News");
+
+                const title = document.createElement("h2");
+                title.className = "news-card-title";
+                title.textContent = item.title || "Untitled";
+
+                const intro = document.createElement("p");
+                intro.className = "news-card-intro";
+                intro.textContent = item.intro || "";
+
+                const cta = document.createElement("span");
+                cta.className = "news-card-cta";
+                cta.textContent = item.linkLabel || "Open link";
+
+                body.appendChild(meta);
+                body.appendChild(title);
+                body.appendChild(intro);
+                body.appendChild(cta);
+
+                link.appendChild(media);
+                link.appendChild(body);
+                card.appendChild(link);
+                grid.appendChild(card);
+            });
+        })();
+    </script>
     <script src="script.js"></script>
 </body>
 </html>
