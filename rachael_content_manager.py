@@ -66,6 +66,9 @@ class RachaelContentManager:
         self.new_image_paths = []
         self.edit_available_image_paths = []
         self.new_available_image_paths = []
+        self.projects_data = {}
+        self.news_data = {}
+        self.available_data = {}
 
         # Load existing data
         self.load_data()
