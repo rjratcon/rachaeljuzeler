@@ -237,5 +237,17 @@ window.availableWorks = [
       "detail-7.jpg",
       "detail-8.jpg"
     ]
+  },
+  {
+    "id": "sconce",
+    "title": "Sconce",
+    "price": "600",
+    "size": "8x10x5",
+    "description": "Art glass sconce",
+    "status": "Available",
+    "folder": "sconce",
+    "images": [
+      "main.jpg"
+    ]
   }
 ];
