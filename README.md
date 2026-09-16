@@ -1,30 +1,28 @@
 # Rachael Juzeler
 
-Portfolio website for artist Rachael Juzeler / Ratchet Constructs, LLC.
+Static portfolio website for artist Rachael Juzeler / Ratchet Constructs, LLC. Hosted on GitHub Pages.
 
-The site presents studio work, biography and CV material, contact information, available work, and a curated news archive.
+## Pages
 
-## Highlights
-
-- Clean, image-forward portfolio presentation
-- Dedicated pages for work, about/CV, contact, available work, and news
-- Lightweight static site structure for fast loading and reliable hosting
-- Simple content data files for maintaining available work and news items
-
-## Project Structure
-
-- `index.html` - Work landing page
+- `index.html` - Work grid (home)
+- `project.html` - Project detail (`?id=projectN`)
 - `about.html` - Biography and CV
-- `updates.html` - News page
+- `available.html` / `available-piece.html` - Available work listing and detail
+- `updates.html` - News
 - `contact.html` - Contact information
-- `available.html` - Available work
-- `available-piece.html` - Individual available work detail view
-- `styles.css` - Site styling
-- `script.js` - Frontend behavior for project pages
-- `available.js` / `available-data.js` - Available work rendering and data
-- `news-data.js` - News page data
-- `images/` - Site imagery and artwork assets
 
-## Publishing
+## Data files (generated, do not hand-edit)
 
-This website is designed for static hosting and is currently configured for GitHub Pages.
+- `project-data.js` - Project titles, descriptions, and image lists
+- `available-data.js` - Available works
+- `news-data.js` - News items
+- `sitemap.xml`
+
+Source of truth is `admin_data/*.json`. Run `python rachael_content_manager.py` to edit projects, available works, and news; it rewrites the files above. Commit and push everything it changes, including `project-data.js`. The About/CV and Contact tabs in the manager are placeholders; edit `about.html` and `contact.html` directly.
+
+## Images
+
+- `images/projectN/` - `main.*` is the hero and home-grid tile; all other image files appear in the project gallery in natural order
+- `images/available/<work>/` - `main.*` then `detail-N.*`
+
+The content manager names copied images automatically.
