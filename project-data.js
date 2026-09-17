@@ -1,4 +1,4 @@
-{
+window.projectData = {
   "project1": {
     "title": "ReConstructed ReFuse: Air, Sea and Landscapes",
     "subtitle": "2025, Public Art Commission",
@@ -274,4 +274,4 @@
       "image6.jpg"
     ]
   }
-}
+};

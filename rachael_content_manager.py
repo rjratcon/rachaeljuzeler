@@ -35,6 +35,7 @@ class RachaelContentManager:
         self.script_js = self.project_dir / "script.js"
         self.news_data_js = self.project_dir / "news-data.js"
         self.available_data_js = self.project_dir / "available-data.js"
+        self.project_data_js = self.project_dir / "project-data.js"
         self.sitemap_xml = self.project_dir / "sitemap.xml"
 
         # Data storage
@@ -253,7 +254,7 @@ class RachaelContentManager:
         img_frame = tk.Frame(existing_frame, bg='#786E00')
         img_frame.pack(pady=10, padx=10, fill='x')
 
-        tk.Label(img_frame, text="Replace Images (optional):",
+        tk.Label(img_frame, text="Add Images (optional, existing images are kept):",
                 font=('EB Garamond', 10, 'bold'),
                 bg='#786E00', fg='#000000').pack(anchor='w')
 
@@ -1053,12 +1054,19 @@ class RachaelContentManager:
         image_files = [path.name for path in folder_path.iterdir() if path.is_file() and path.suffix.lower() in supported_exts]
 
         def image_sort_key(name):
-            lower = name.lower()
-            if 'main' in lower:
-                return (0, lower)
-            return (1, lower)
+            # main first (main.png before main.jpg, matching the home-page grid),
+            # then natural order so detail-2 precedes detail-10
+            path = Path(name.lower())
+            parts = [int(p) if p.isdigit() else p for p in re.split(r'(\d+)', path.name)]
+            if path.stem == 'main':
+                return (0, path.suffix != '.png', parts)
+            return (1, False, parts)
 
-        return sorted(image_files, key=image_sort_key)
+        images = sorted(image_files, key=image_sort_key)
+        # Several folders hold both main.png and main.jpg; only one can be the hero,
+        # so drop any extra main.* rather than pushing it into the gallery
+        mains = [name for name in images if Path(name.lower()).stem == 'main']
+        return mains[:1] + [name for name in images if name not in mains]
 
     def sanitize_filename(self, text):
         """Convert text to safe filename"""
@@ -1344,37 +1352,12 @@ class RachaelContentManager:
         with open(self.sitemap_xml, 'w', encoding='utf-8') as f:
             f.write(sitemap_content)
 
-    def copy_image(self, source_path, dest_name):
-        """Copy image to project directory with new name"""
-        if not source_path or not os.path.exists(source_path):
-            return None
-
-        source = Path(source_path)
-        extension = source.suffix.lower()
-        dest_path = self.projects_base_dir / f"{dest_name}{extension}"
-
-        try:
-            shutil.copy2(source_path, dest_path)
-            return dest_path.name
-        except Exception as e:
-            messagebox.showerror("Error", f"Failed to copy image: {e}")
-            return None
-
     def load_data(self):
-        """Load existing data from script.js and JSON files"""
-        # Load existing projects from script.js
-        self.load_projects_from_script()
-
-        # Load JSON data if exists
-        if self.projects_data_file.exists():
-            with open(self.projects_data_file, 'r') as f:
-                stored_data = json.load(f)
-                # Merge with script.js data
-                self.projects_data.update(stored_data)
-
-        # Update project dropdown with real project names
-        project_names = [f"{pid}: {data['title']}" for pid, data in self.projects_data.items()]
-        self.project_select['values'] = project_names
+        """Load project, news, and available-work data and refresh the generated site files"""
+        # admin_data/projects.json is the source of truth for projects; project-data.js
+        # is generated from it (same pattern as available works).
+        self.load_projects_data()
+        self.sync_project_outputs()
 
         # Load news data and refresh related files
         self.load_news_data()
@@ -1384,54 +1367,160 @@ class RachaelContentManager:
         self.load_available_data()
         self.sync_available_outputs()
 
-    def load_projects_from_script(self):
-        """Extract project data from script.js file"""
+    def load_projects_data(self):
+        """Load projects from the JSON store"""
+        self.projects_data = {}
+        if not self.projects_data_file.exists():
+            return
+
         try:
-            if not self.script_js.exists():
-                self.projects_data = {}
-                return
+            with open(self.projects_data_file, 'r', encoding='utf-8') as f:
+                stored = json.load(f)
+        except (OSError, json.JSONDecodeError) as e:
+            messagebox.showerror("Error", f"Could not read {self.projects_data_file.name}: {e}")
+            return
 
-            with open(self.script_js, 'r', encoding='utf-8') as f:
-                script_content = f.read()
-
-            # Extract projectData object using regex
-            pattern = r'const projectData = \{(.*?)\};'
-            match = re.search(pattern, script_content, re.DOTALL)
-
-            if not match:
-                self.projects_data = {}
-                return
-
-            # Parse the project data (simplified parsing)
-            project_section = match.group(1)
-
-            # Extract individual projects
-            project_pattern = r'(project\d+):\s*\{([^}]+)\}'
-            projects = re.findall(project_pattern, project_section, re.DOTALL)
-
-            self.projects_data = {}
-            for project_id, project_content in projects:
-                # Extract title, subtitle, description
-                title_match = re.search(r'title:\s*["\']([^"\']+)["\']', project_content)
-                subtitle_match = re.search(r'subtitle:\s*["\']([^"\']+)["\']', project_content)
-                desc_match = re.search(r'description:\s*["\']([^"\']+)["\']', project_content)
-                folder_match = re.search(r'folder:\s*["\']([^"\']+)["\']', project_content)
-
-                self.projects_data[project_id] = {
-                    'title': title_match.group(1) if title_match else '',
-                    'subtitle': subtitle_match.group(1) if subtitle_match else '',
-                    'description': desc_match.group(1) if desc_match else '',
-                    'folder': folder_match.group(1) if folder_match else project_id
-                }
-
-        except Exception as e:
-            print(f"Error loading projects from script.js: {e}")
-            self.projects_data = {}
+        for project_id, project in stored.items():
+            self.projects_data[project_id] = {
+                'title': project.get('title', ''),
+                'subtitle': project.get('subtitle', ''),
+                'description': project.get('description', ''),
+                'folder': project.get('folder', project_id),
+                'images': project.get('images', [])
+            }
 
     def save_projects_data(self):
         """Save projects data to JSON file"""
-        with open(self.projects_data_file, 'w') as f:
-            json.dump(self.projects_data, f, indent=2)
+        with open(self.projects_data_file, 'w', encoding='utf-8') as f:
+            json.dump(self.projects_data, f, indent=2, ensure_ascii=False)
+
+    def project_sort_key(self, project_id):
+        return int(re.sub(r'[^0-9]', '', project_id) or 0)
+
+    def next_project_id(self):
+        """Next unused projectN id (len()-based ids collide after a delete)"""
+        highest = max((self.project_sort_key(pid) for pid in self.projects_data), default=0)
+        return f"project{highest + 1}"
+
+    def refresh_project_dropdown(self):
+        project_names = [
+            f"{pid}: {self.projects_data[pid]['title']}"
+            for pid in sorted(self.projects_data, key=self.project_sort_key)
+        ]
+        self.project_select['values'] = project_names
+
+    def sync_project_outputs(self):
+        """Rebuild project JSON, JS, and sitemap from current folder contents"""
+        for project_id, project in self.projects_data.items():
+            folder_name = project.get('folder', project_id)
+            # Keep the stored list if the folder is missing so a bad path does not wipe it
+            if (self.projects_base_dir / folder_name).is_dir():
+                project['images'] = self.get_project_image_names(folder_name)
+
+        self.save_projects_data()
+        self.generate_project_data_js()
+        self.regenerate_sitemap()
+        self.refresh_project_dropdown()
+
+    def generate_project_data_js(self):
+        """Generate the frontend data file used by project.html"""
+        projects = {}
+        for project_id in sorted(self.projects_data, key=self.project_sort_key):
+            project = self.projects_data[project_id]
+            projects[project_id] = {
+                'title': project.get('title', ''),
+                'subtitle': project.get('subtitle', ''),
+                'description': project.get('description', ''),
+                'folder': project.get('folder', project_id),
+                'images': project.get('images', [])
+            }
+
+        content = "window.projectData = " + json.dumps(projects, indent=2, ensure_ascii=False) + ";\n"
+        with open(self.project_data_js, 'w', encoding='utf-8') as f:
+            f.write(content)
+
+    def copy_project_images_to_folder(self, image_paths, folder_path):
+        """Copy images into a project folder using the names the site looks for.
+
+        Existing images are kept: the first new image becomes main.* only if the
+        folder has no main image yet, the rest continue the detail-N sequence.
+        """
+        folder_path.mkdir(parents=True, exist_ok=True)
+        existing = self.get_project_image_names(folder_path.name)
+        has_main = any(Path(name).stem.lower() == 'main' for name in existing)
+        detail_numbers = [
+            int(m.group(1)) for m in (re.match(r'detail-(\d+)$', Path(name).stem.lower()) for name in existing) if m
+        ]
+        next_detail = max(detail_numbers, default=0) + 1
+
+        saved_names = []
+        for image_path in image_paths:
+            source = Path(image_path)
+            if not source.exists():
+                messagebox.showwarning("Warning", f"Image not found, skipped: {source.name}")
+                continue
+            extension = source.suffix.lower()
+            if not has_main:
+                filename = f"main{extension}"
+                has_main = True
+            else:
+                filename = f"detail-{next_detail}{extension}"
+                next_detail += 1
+            shutil.copy2(source, folder_path / filename)
+            saved_names.append(filename)
+
+        return saved_names
+
+    def html_escape(self, text):
+        return (str(text).replace('&', '&amp;').replace('<', '&lt;')
+                .replace('>', '&gt;').replace('"', '&quot;'))
+
+    def add_project_to_index(self, project_id, title):
+        """Append a work tile for a new project to the index.html grid"""
+        with open(self.index_html, 'r', encoding='utf-8') as f:
+            html = f.read()
+
+        marker = "            <!-- Add more work items as needed -->"
+        if marker not in html or f'data-project="{project_id}"' in html:
+            return False
+
+        safe_title = self.html_escape(title)
+        tile = (
+            f"            <!-- Work Item {self.project_sort_key(project_id)} -->\n"
+            f"            <div class=\"work-container\">\n"
+            f"                <a class=\"work-item\" href=\"project.html?id={project_id}\" data-project=\"{project_id}\" aria-label=\"View project: {safe_title}\">\n"
+            f"                    <div class=\"work-item-image\"></div>\n"
+            f"                </a>\n"
+            f"                <div class=\"work-item-title\">{safe_title}</div>\n"
+            f"            </div>\n\n"
+        )
+        html = html.replace(marker, tile + marker, 1)
+        with open(self.index_html, 'w', encoding='utf-8') as f:
+            f.write(html)
+        return True
+
+    def remove_project_from_index(self, project_id):
+        """Remove a project's work tile from the index.html grid"""
+        with open(self.index_html, 'r', encoding='utf-8') as f:
+            html = f.read()
+
+        anchor = html.find(f'data-project="{project_id}"')
+        if anchor == -1:
+            return False
+
+        # Tile = "<!-- Work Item N -->" comment through the work-container's closing
+        # </div>, which sits at the same 12-space indent as the comment.
+        start = html.rfind("            <!-- Work Item", 0, anchor)
+        end = html.find("\n            </div>\n", anchor)
+        if start == -1 or end == -1:
+            return False
+        end += len("\n            </div>\n")
+        if html[end:end + 1] == "\n":
+            end += 1
+
+        with open(self.index_html, 'w', encoding='utf-8') as f:
+            f.write(html[:start] + html[end:])
+        return True
 
     def normalize_news_item(self, item_id, item):
         """Normalize a news record to the fields used by the site"""
@@ -1643,55 +1732,36 @@ class RachaelContentManager:
             messagebox.showerror("Error", "Please select at least one image for the project")
             return
 
-        # Generate project ID
-        project_id = f"project{len(self.projects_data) + 16}"  # Start from 16 since 1-15 exist
+        project_id = self.next_project_id()
         project_folder = self.projects_base_dir / project_id
-        project_folder.mkdir(exist_ok=True)
 
-        # Copy images to project folder
-        image_filenames = []
-        if self.new_image_paths:
-            for i, img_path in enumerate(self.new_image_paths):
-                if os.path.exists(img_path):
-                    # Get file extension
-                    source = Path(img_path)
-                    extension = source.suffix.lower()
+        try:
+            image_filenames = self.copy_project_images_to_folder(self.new_image_paths, project_folder)
+            if not image_filenames:
+                messagebox.showerror("Error", "None of the selected images could be copied.")
+                return
 
-                    # Create filename: project_id-1.jpg, project_id-2.jpg, etc.
-                    new_filename = f"{project_id}-{i+1}{extension}"
-                    dst_path = project_folder / new_filename
+            self.projects_data[project_id] = {
+                'title': title,
+                'subtitle': subtitle,
+                'description': description,
+                'folder': project_id,
+                'images': image_filenames
+            }
 
-                    try:
-                        # Copy image directly to project folder
-                        shutil.copy2(img_path, dst_path)
-                        image_filenames.append(new_filename)
-                        print(f"Copied {img_path} to {dst_path}")
-                    except Exception as e:
-                        print(f"Failed to copy image {img_path}: {e}")
-                        messagebox.showwarning("Warning", f"Failed to copy image {source.name}: {e}")
+            self.sync_project_outputs()
+            added_tile = self.add_project_to_index(project_id, title)
 
-        print(f"Created project folder: {project_folder}")
-        print(f"Copied {len(image_filenames)} images: {image_filenames}")
-
-        # Save project data
-        self.projects_data[project_id] = {
-            'title': title,
-            'subtitle': subtitle,
-            'description': description,
-            'folder': project_id,
-            'images': image_filenames
-        }
-
-        self.save_projects_data()
-
-        # Update HTML files (placeholder)
-        # Would need to update script.js projectData object and index.html work grid
+        except Exception as e:
+            messagebox.showerror("Error", f"Failed to create project: {e}")
+            return
 
         messagebox.showinfo("Success",
                             f"Project '{title}' created successfully!\n\n"
                             f"Project ID: {project_id}\n"
                             f"Images copied: {len(image_filenames)}\n"
-                            f"Folder created: images/{project_id}/")
+                            f"Folder created: images/{project_id}/\n"
+                            f"Home page tile: {'added' if added_tile else 'NOT added (edit index.html by hand)'}")
 
         # Clear form
         self.new_project_title.delete(0, tk.END)
@@ -1700,13 +1770,9 @@ class RachaelContentManager:
         self.new_image_paths = []
         self.new_image_list.delete(0, tk.END)
 
-        # Refresh dropdown
-        project_names = [f"{pid}: {data['title']}" for pid, data in self.projects_data.items()]
-        self.project_select['values'] = project_names
-
     def update_project(self):
         """Update existing project with new data"""
-        if not hasattr(self, 'current_project_id') or not self.current_project_id:
+        if not self.current_project_id or self.current_project_id not in self.projects_data:
             messagebox.showerror("Error", "Please select a project to update")
             return
 
@@ -1719,56 +1785,38 @@ class RachaelContentManager:
             messagebox.showerror("Error", "Please fill in title and description")
             return
 
+        project = self.projects_data[self.current_project_id]
+
         try:
-            # Update project data
-            self.projects_data[self.current_project_id].update({
+            project.update({
                 'title': title,
                 'subtitle': subtitle,
                 'description': description
             })
 
-            # Handle new images if any were selected
-            if hasattr(self, 'edit_image_paths') and self.edit_image_paths:
-                project_folder = self.projects_base_dir / self.current_project_id
-                project_folder.mkdir(exist_ok=True)
-
-                # Copy new images
-                image_filenames = []
-                for i, img_path in enumerate(self.edit_image_paths):
-                    filename = self.copy_image(img_path, f"{self.current_project_id}-{i+1}")
-                    if filename:
-                        # Move to project folder
-                        src = self.projects_base_dir / filename
-                        dst = project_folder / filename
-                        if src.exists():
-                            shutil.move(src, dst)
-                        image_filenames.append(filename)
-
-                if image_filenames:
-                    self.projects_data[self.current_project_id]['images'] = image_filenames
-
-                # Clear selected images
+            added = []
+            if self.edit_image_paths:
+                project_folder = self.projects_base_dir / project.get('folder', self.current_project_id)
+                added = self.copy_project_images_to_folder(self.edit_image_paths, project_folder)
                 self.edit_image_paths = []
 
-            # Save to JSON
-            self.save_projects_data()
+            # Writes projects.json, project-data.js, sitemap.xml and rescans the folder
+            self.sync_project_outputs()
 
-            # Update dropdown to reflect changes
-            project_names = [f"{pid}: {data['title']}" for pid, data in self.projects_data.items()]
-            self.project_select['values'] = project_names
-            # Keep current selection
             self.project_select.set(f"{self.current_project_id}: {title}")
+            self.refresh_project_image_list(project.get('images', []))
 
-            messagebox.showinfo("Success", f"Project '{title}' updated successfully!")
-
-            # TODO: Update script.js and HTML files with new data
+            messagebox.showinfo("Success",
+                                f"Project '{title}' updated.\n\n"
+                                f"Images added: {len(added)}\n"
+                                f"project-data.js regenerated. Commit and push to publish.")
 
         except Exception as e:
             messagebox.showerror("Error", f"Failed to update project: {e}")
 
     def delete_project(self):
         """Delete project with confirmation"""
-        if not hasattr(self, 'current_project_id') or not self.current_project_id:
+        if not self.current_project_id:
             messagebox.showerror("Error", "Please select a project to delete")
             return
 
@@ -1781,32 +1829,30 @@ class RachaelContentManager:
         result = messagebox.askyesno(
             "Delete Project",
             f"Are you sure you want to delete the project:\n\n'{project['title']}'\n\n"
-            f"This action cannot be undone and will remove all project data and images.",
+            f"This removes it from the site. The image folder images/{project.get('folder', self.current_project_id)}/ is left in place.",
             icon='warning'
         )
 
         if result:
             try:
-                # Remove project data
-                del self.projects_data[self.current_project_id]
-                self.save_projects_data()
+                deleted_id = self.current_project_id
+                del self.projects_data[deleted_id]
+                self.sync_project_outputs()
+                removed_tile = self.remove_project_from_index(deleted_id)
 
                 # Clear the form
                 self.edit_project_title.delete(0, tk.END)
                 self.edit_project_subtitle.delete(0, tk.END)
                 self.edit_project_description.delete('1.0', tk.END)
-
-                # Update dropdown
-                project_names = [f"{pid}: {data['title']}" for pid, data in self.projects_data.items()]
-                self.project_select['values'] = project_names
+                self.refresh_project_image_list([])
+                self.project_editing_label.config(text="No project selected")
+                self.edit_project_folder_label.config(text="No project selected")
                 self.project_select.set('')
-
-                # Reset current project
                 self.current_project_id = None
 
-                messagebox.showinfo("Success", f"Project '{project['title']}' has been deleted.")
-
-                # TODO: Also remove from HTML files and delete project folder/images
+                messagebox.showinfo("Success",
+                                    f"Project '{project['title']}' has been deleted.\n\n"
+                                    f"Home page tile: {'removed' if removed_tile else 'NOT found (edit index.html by hand)'}")
 
             except Exception as e:
                 messagebox.showerror("Error", f"Failed to delete project: {e}")
