@@ -239,15 +239,27 @@ window.availableWorks = [
     ]
   },
   {
-    "id": "sconce",
-    "title": "Sconce",
-    "price": "600",
-    "size": "8x10x5",
-    "description": "Art glass sconce",
+    "id": "sconces",
+    "title": "Sconces",
+    "price": "$640 each / $1200 pair",
+    "size": "10 x 7 x 5\"",
+    "description": "2026\nCrushed and kiln-formed bottle and sheet glass with copper mesh inclusions, beeswax, custom light fixtures.\nMy new sconces are very exciting. I bought a glass crusher with the remaining funds from my last big project and am now moving into tiles and lighting. Using modernized pâte de verre techniques and crushed bottle and waste sheet glass, I’ve been experimenting with temperatures, molding techniques and inclusions to see where I can push this reclaimed material. I just happened to have four custom sconce fixtures and a slumping mold (I used the inner side;) to create four unique and innovative lights with scrap bottle glass, scrap studio sheet glass and copper mesh . . . . . \nThis is only the beginning . . . . \n\nThe two art glass sconces utilizing two of the custom fixtures, swapping out my crushed glass experiments, are made from two of my glass quilt artworks created for my exhibit at the International Gallery of Contemporary Art (IGCA) in Anchorage in 2022, Trending Towards Tapestry / A Changing Epoch.\nThe Improv water quilts I  recently reworked, experimenting with textures and refiring to develop a velvety finish for my show 4x4 at the Bear’s Lair Gallery in Juneau and then reworked once more, utilizing a slumping mold to transform the wall works into art lighting.",
     "status": "Available",
-    "folder": "sconce",
+    "folder": "sconces",
     "images": [
-      "main.jpg"
+      "main.jpg",
+      "detail-1.jpg",
+      "detail-10.jpg",
+      "detail-11.jpg",
+      "detail-12.jpg",
+      "detail-2.jpg",
+      "detail-3.jpg",
+      "detail-4.jpg",
+      "detail-5.jpg",
+      "detail-6.jpg",
+      "detail-7.jpg",
+      "detail-8.jpg",
+      "detail-9.jpg"
     ]
   }
 ];
