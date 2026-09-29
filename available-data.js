@@ -202,6 +202,21 @@ window.availableWorks = [
     ]
   },
   {
+    "id": "mini-imperial-chandelier",
+    "title": "Mini-Imperial Chandelier",
+    "price": "$340",
+    "size": "20 x 18 x 18\"",
+    "description": "2024\nWooden wagon wheel, kilned glass pendants, metal. \nA miniature version of the chandeliers I created for the Imperial Saloon, downtown Juneau.",
+    "status": "Available",
+    "folder": "mini-imperial-chandelier",
+    "images": [
+      "main.jpg",
+      "detail-1.jpg",
+      "detail-2.jpg",
+      "detail-3.jpg"
+    ]
+  },
+  {
     "id": "red-herring",
     "title": "Red Herring",
     "price": "$40",
