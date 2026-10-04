@@ -4,16 +4,9 @@ This folder contains all images for the portfolio website.
 
 ## Organization
 
-Each project has its own folder:
-- `project1/` - Project 1 images
-- `project2/` - Project 2 images
-- `project3/` - Project 3 images
-- `project4/` - Project 4 images
-- `project5/` - Project 5 images
-- `project6/` - Project 6 images
-- `project7/` - Project 7 images
-- `project8/` - Project 8 images
-- `project9/` - Project 9 images
+- `project1/` ... `project15/` - one folder per project on the WORK page
+- `chandeliers/<piece id>/` - one folder per chandelier shown inside the CHANDELIERS project (project3)
+- `available/<piece id>/` - one folder per Available work
 
 ## File Naming Convention
 
@@ -30,7 +23,7 @@ Each project has its own folder:
 
 ## Image Requirements
 
-- **Grid Images**: Square format (1:1 ratio) works best, minimum 600x600px
+- **Grid Images**: any shape; images are shown whole (not cropped), minimum 600px on the long side
 - **Detail Images**: Any aspect ratio, recommended width 1200-2000px
 - **File Size**: Optimize for web, keep under 1MB per image
 - **Quality**: 80-90% JPEG quality or equivalent

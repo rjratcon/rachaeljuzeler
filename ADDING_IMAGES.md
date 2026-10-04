@@ -42,10 +42,10 @@ images/
 - If no image is found, shows the default gold background
 
 ### Project Detail Pages
-- Automatically scans for all images in the project folder
-- Displays them in the order: main → primary → hero → detail-1 → detail-2, etc.
-- Shows up to 6 images per project
-- If no images found, displays a helpful message
+- The content manager scans the project folder and lists every image in `project-data.js`
+- `main` is shown first, then the rest in natural order (detail-2 before detail-10); there is no limit
+- Every image is shown whole inside its box (nothing is cropped), so any shape works
+- If no images are found, displays a helpful message
 
 ## Image Recommendations
 
@@ -79,7 +79,7 @@ The system recognizes these image names (in order of preference):
 1. **Use descriptive names**: `glass-detail-1.png` is better than `IMG001.png`
 2. **Optimize file sizes**: Use image compression tools before uploading
 3. **Test different formats**: PNG for graphics, JPG for photos
-4. **Square crops**: Work best for grid display
+4. **Any shape works**: images are shown whole and scaled to fit their box
 5. **Consistent naming**: Makes organization easier
 
 ## Troubleshooting
@@ -96,17 +96,11 @@ The system recognizes these image names (in order of preference):
 
 ## Available Work
 
-Available pieces now live in:
+Available pieces live in one folder per piece, named from the title:
 
 ```text
-images/available/[piece title]/
-```
-
-Example:
-
-```text
-images/available/Glacier Study 02 Sawyer Glacier/
-images/available/Herring/
+images/available/herring/
+images/available/mini-imperial-chandelier/
 ```
 
 Inside each piece folder:
@@ -117,13 +111,7 @@ You do not need to name these by hand. The content manager will copy and rename 
 
 ## Updating Available Work with the Python App
 
-Rachael can run the content manager in either of these ways:
-
-```text
-Double-click: launch_content_manager.bat
-```
-
-or from Command Prompt / PowerShell:
+Run the content manager from Command Prompt / PowerShell in the website folder:
 
 ```powershell
 py -3.13 rachael_content_manager.py
@@ -149,3 +137,18 @@ The app updates:
 - `sitemap.xml`
 
 The website pages then read that information automatically.
+
+**Order on the Available page:** new works appear at the top. To rearrange existing works, change the
+order of the entries in `admin_data/available_works.json`, then open the content manager once so it
+rewrites `available-data.js`.
+
+## Chandeliers
+
+The CHANDELIERS project page shows a grid of individual chandeliers; clicking one opens `piece.html`
+with its photos and text.
+
+- Text and photo lists: `admin_data/project_pieces.json` (one entry per chandelier, in display order)
+- Photos: `images/chandeliers/<piece id>/main.jpg`, `detail-1.jpg`, ...
+
+The content manager does not have a screen for these yet. Edit the JSON file by hand, then open the
+content manager once; it rewrites `project-pieces-data.js` and `sitemap.xml`.
