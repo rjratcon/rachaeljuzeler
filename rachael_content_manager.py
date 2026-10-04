@@ -36,12 +36,16 @@ class RachaelContentManager:
         self.news_data_js = self.project_dir / "news-data.js"
         self.available_data_js = self.project_dir / "available-data.js"
         self.project_data_js = self.project_dir / "project-data.js"
+        self.project_pieces_js = self.project_dir / "project-pieces-data.js"
         self.sitemap_xml = self.project_dir / "sitemap.xml"
 
         # Data storage
         self.data_dir = self.project_dir / "admin_data"
         self.data_dir.mkdir(exist_ok=True)
         self.projects_data_file = self.data_dir / "projects.json"
+        # Individual works shown as a clickable grid inside a project (e.g. CHANDELIERS).
+        # Kept out of projects.json so editing a project here never drops them.
+        self.project_pieces_file = self.data_dir / "project_pieces.json"
         self.cv_data_file = self.data_dir / "cv_sections.json"
         self.news_data_file = self.data_dir / "news.json"
         self.available_data_file = self.data_dir / "available_works.json"
@@ -1220,6 +1224,7 @@ class RachaelContentManager:
 
         self.available_data = normalized_stored_data
         scanned_data = self.scan_available_folders()
+        new_from_folders = {}
 
         for work_id, scanned in scanned_data.items():
             existing = self.available_data.get(work_id, {})
@@ -1233,7 +1238,12 @@ class RachaelContentManager:
                 'folder': existing.get('folder') or scanned['folder'],
                 'images': scanned['images']
             }
-            self.available_data[work_id] = merged
+            if work_id in self.available_data:
+                self.available_data[work_id] = merged  # existing key keeps its position
+            else:
+                new_from_folders[work_id] = merged
+
+        self.available_data = {**new_from_folders, **self.available_data}
 
         # Refresh image lists for entries whose folders already exist
         for work_id, work in list(self.available_data.items()):
@@ -1245,10 +1255,13 @@ class RachaelContentManager:
         self.save_available_data()
 
     def save_available_data(self):
-        """Persist available work data to JSON"""
-        ordered_data = dict(sorted(self.available_data.items(), key=lambda item: item[1].get('title', '').lower()))
+        """Persist available work data to JSON.
+
+        Dict order is the display order on the Available page: newest at the top.
+        To reorder existing works, reorder the entries in admin_data/available_works.json.
+        """
         with open(self.available_data_file, 'w', encoding='utf-8') as f:
-            json.dump(ordered_data, f, indent=2, ensure_ascii=False)
+            json.dump(self.available_data, f, indent=2, ensure_ascii=False)
 
     def refresh_available_dropdown(self):
         """Refresh the combobox choices for available works"""
@@ -1303,7 +1316,7 @@ class RachaelContentManager:
     def generate_available_data_js(self):
         """Generate the frontend data file used by the available pages"""
         works = []
-        for work_id, work in sorted(self.available_data.items(), key=lambda item: item[1].get('title', '').lower()):
+        for work_id, work in self.available_data.items():
             works.append({
                 'id': work_id,
                 'title': work.get('title', ''),
@@ -1338,8 +1351,14 @@ class RachaelContentManager:
             for work_id in sorted(self.available_data.keys())
         ]
 
+        piece_urls = [
+            f"https://rachaeljuzeler.com/piece.html?project={project_id}&amp;id={piece['id']}"
+            for project_id, entry in sorted((self.load_project_pieces() or {}).items())
+            for piece in entry.get('pieces', [])
+        ]
+
         url_lines = []
-        for url in base_urls + project_urls + available_urls:
+        for url in base_urls + project_urls + piece_urls + available_urls:
             url_lines.append("  <url>")
             url_lines.append(f"    <loc>{url}</loc>")
             url_lines.append("  </url>")
@@ -1419,6 +1438,7 @@ class RachaelContentManager:
 
         self.save_projects_data()
         self.generate_project_data_js()
+        self.generate_project_pieces_js()
         self.regenerate_sitemap()
         self.refresh_project_dropdown()
 
@@ -1437,6 +1457,27 @@ class RachaelContentManager:
 
         content = "window.projectData = " + json.dumps(projects, indent=2, ensure_ascii=False) + ";\n"
         with open(self.project_data_js, 'w', encoding='utf-8') as f:
+            f.write(content)
+
+    def load_project_pieces(self):
+        """Read admin_data/project_pieces.json ({project_id: {"pieces": [...]}}); edited by hand for now"""
+        if not self.project_pieces_file.exists():
+            return {}
+        try:
+            with open(self.project_pieces_file, 'r', encoding='utf-8') as f:
+                return json.load(f)
+        except (OSError, json.JSONDecodeError) as e:
+            messagebox.showerror("Error", f"Could not read {self.project_pieces_file.name}: {e}")
+            return None
+
+    def generate_project_pieces_js(self):
+        """Generate project-pieces-data.js used by project.html and piece.html"""
+        pieces = self.load_project_pieces()
+        if pieces is None:
+            # Unreadable JSON: leave the existing JS alone rather than publishing an empty grid
+            return
+        content = "window.projectPieces = " + json.dumps(pieces, indent=2, ensure_ascii=False) + ";\n"
+        with open(self.project_pieces_js, 'w', encoding='utf-8') as f:
             f.write(content)
 
     def copy_project_images_to_folder(self, image_paths, folder_path):
@@ -2029,7 +2070,7 @@ class RachaelContentManager:
                 )
                 return
 
-            self.available_data[work_id] = {
+            new_work = {
                 'id': work_id,
                 'title': title,
                 'price': price,
@@ -2039,6 +2080,8 @@ class RachaelContentManager:
                 'folder': folder_name,
                 'images': images
             }
+            # Newest work first on the Available page
+            self.available_data = {work_id: new_work, **self.available_data}
 
             self.sync_available_outputs()
 
@@ -2100,7 +2143,10 @@ class RachaelContentManager:
                 return
 
             if new_work_id != self.current_available_id:
-                self.available_data[new_work_id] = self.available_data.pop(self.current_available_id)
+                self.available_data = {
+                    (new_work_id if key == self.current_available_id else key): value
+                    for key, value in self.available_data.items()
+                }
                 self.current_available_id = new_work_id
                 work = self.available_data[self.current_available_id]
 

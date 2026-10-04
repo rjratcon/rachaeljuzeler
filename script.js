@@ -22,6 +22,11 @@ document.addEventListener('DOMContentLoaded', function() {
         loadProjectContent();
     }
 
+    // Exact match: 'available-piece.html' also contains 'piece.html'
+    if (currentPage === 'piece.html') {
+        loadPieceContent();
+    }
+
     // Load grid background images
     loadGridBackgroundImages();
 });
@@ -56,6 +61,14 @@ function loadProjectContent() {
     const descriptionElement = document.getElementById('project-description');
     const paragraphs = (project.description || '').split(/\n\s*\n/);
     descriptionElement.innerHTML = paragraphs.map(p => `<p>${escapeHtml(p).replace(/\n/g, '<br>')}</p>`).join('');
+
+    // Projects with individual works (e.g. CHANDELIERS) show the hero plus a clickable grid
+    const pieces = getProjectPieces(projectId);
+    if (pieces.length) {
+        renderProjectImages(project.folder, project.title, (project.images || []).slice(0, 1));
+        renderPieceGrid(projectId, pieces);
+        return;
+    }
 
     // Prefer the image list from project-data.js; fall back to probing fixed names
     if (Array.isArray(project.images) && project.images.length) {
@@ -158,6 +171,187 @@ function renderProjectImages(folderName, projectTitle, imageNames) {
             gallery.appendChild(img);
         }
     });
+}
+
+// Individual works inside a project come from project-pieces-data.js (admin_data/project_pieces.json)
+function getProjectPieceEntry(projectId) {
+    const all = window.projectPieces || {};
+    return all[projectId] || null;
+}
+
+function getProjectPieces(projectId) {
+    const entry = getProjectPieceEntry(projectId);
+    return entry && Array.isArray(entry.pieces) ? entry.pieces : [];
+}
+
+function getPieceImagePath(projectId, piece, imageName) {
+    const entry = getProjectPieceEntry(projectId) || {};
+    return `images/${encodeURIComponent(entry.image_dir || projectId)}/${encodeURIComponent(piece.folder || piece.id)}/${encodeURIComponent(imageName)}`;
+}
+
+function getPieceUrl(projectId, piece) {
+    return `piece.html?project=${encodeURIComponent(projectId)}&id=${encodeURIComponent(piece.id)}`;
+}
+
+// Same card markup as the Available page so the grid looks and behaves the same
+function renderPieceGrid(projectId, pieces) {
+    const grid = document.getElementById('project-pieces');
+    const gallery = document.getElementById('project-gallery');
+    if (!grid) {
+        return;
+    }
+
+    gallery.innerHTML = '';
+    gallery.hidden = true;
+    grid.innerHTML = '';
+    grid.hidden = false;
+
+    pieces.forEach(piece => {
+        const card = document.createElement('article');
+        card.className = 'available-card';
+
+        const link = document.createElement('a');
+        link.className = 'available-card-link';
+        link.href = getPieceUrl(projectId, piece);
+        link.setAttribute('aria-label', `View work: ${piece.title}`);
+
+        const imageWrap = document.createElement('div');
+        imageWrap.className = 'available-card-image-wrap';
+
+        const image = document.createElement('img');
+        image.className = 'available-card-image';
+        image.alt = piece.title;
+        image.loading = 'lazy';
+        image.src = (piece.images || []).length
+            ? getPieceImagePath(projectId, piece, piece.images[0])
+            : 'images/rjuzeler.jpg';
+        image.onerror = function() {
+            this.onerror = null;
+            this.src = 'images/rjuzeler.jpg';
+        };
+        imageWrap.appendChild(image);
+
+        const textWrap = document.createElement('div');
+        textWrap.className = 'available-card-text';
+
+        const title = document.createElement('h2');
+        title.className = 'available-card-title';
+        title.textContent = piece.title;
+        textWrap.appendChild(title);
+
+        if (piece.year) {
+            const year = document.createElement('p');
+            year.className = 'available-card-price';
+            year.textContent = piece.year;
+            textWrap.appendChild(year);
+        }
+
+        link.appendChild(imageWrap);
+        link.appendChild(textWrap);
+        card.appendChild(link);
+        grid.appendChild(card);
+    });
+}
+
+// Detail page for one work: piece.html?project=project3&id=<piece id>
+function loadPieceContent() {
+    const params = new URLSearchParams(window.location.search);
+    const projectId = params.get('project');
+    const pieceId = params.get('id');
+    const project = (window.projectData || {})[projectId];
+    const piece = getProjectPieces(projectId).find(item => item.id === pieceId);
+
+    const backLink = document.getElementById('piece-back-link');
+    if (project) {
+        backLink.href = `project.html?id=${encodeURIComponent(projectId)}`;
+        backLink.textContent = `Back to ${project.title}`;
+    }
+
+    if (!piece) {
+        document.getElementById('piece-missing').hidden = false;
+        return;
+    }
+
+    document.getElementById('piece-detail').hidden = false;
+    document.getElementById('piece-title').textContent = piece.title;
+
+    [['piece-year', piece.year], ['piece-medium', piece.medium], ['piece-size', piece.size]].forEach(([id, value]) => {
+        const element = document.getElementById(id);
+        element.textContent = value || '';
+        element.hidden = !value;
+    });
+
+    const description = document.getElementById('piece-description');
+    description.innerHTML = '';
+    (piece.description || '').split(/\n\s*\n/).filter(text => text.trim()).forEach(text => {
+        const paragraph = document.createElement('p');
+        paragraph.textContent = text.trim();
+        description.appendChild(paragraph);
+    });
+
+    const images = piece.images || [];
+    const mainImagePath = images.length ? getPieceImagePath(projectId, piece, images[0]) : 'images/rjuzeler.jpg';
+    const mainImage = document.getElementById('piece-main-image');
+    mainImage.alt = piece.title;
+    mainImage.src = mainImagePath;
+
+    const gallery = document.getElementById('piece-gallery');
+    gallery.innerHTML = '';
+    images.slice(1).forEach((imageName, index) => {
+        const thumb = document.createElement('img');
+        thumb.className = 'available-piece-thumb';
+        thumb.alt = `${piece.title} detail ${index + 1}`;
+        thumb.loading = 'lazy';
+        thumb.src = getPieceImagePath(projectId, piece, imageName);
+        thumb.onerror = function() {
+            this.remove();
+        };
+        gallery.appendChild(thumb);
+    });
+
+    updatePieceSeo(projectId, piece, mainImagePath);
+}
+
+function updatePieceSeo(projectId, piece, imagePath) {
+    const pageUrl = buildAbsoluteUrl(getPieceUrl(projectId, piece));
+    const pageTitle = `${piece.title} | Rachael Juzeler`;
+    const description = (piece.description || '').split('\n')[0].trim() || `${piece.title} by Rachael Juzeler.`;
+    const imageUrl = buildAbsoluteUrl(imagePath);
+
+    document.title = pageTitle;
+    setCanonical(pageUrl);
+    setMeta('meta[name="description"]', description);
+    setMeta('meta[property="og:title"]', pageTitle);
+    setMeta('meta[property="og:description"]', description);
+    setMeta('meta[property="og:url"]', pageUrl);
+    setMeta('meta[property="og:image"]', imageUrl);
+    setMeta('meta[name="twitter:title"]', pageTitle);
+    setMeta('meta[name="twitter:description"]', description);
+    setMeta('meta[name="twitter:image"]', imageUrl);
+
+    const structuredData = document.getElementById('piece-structured-data');
+    if (structuredData) {
+        const data = {
+            '@context': 'https://schema.org',
+            '@type': 'VisualArtwork',
+            name: piece.title,
+            description,
+            url: pageUrl,
+            image: imageUrl,
+            creator: {
+                '@type': 'Person',
+                name: 'Rachael Juzeler',
+                url: buildAbsoluteUrl('')
+            }
+        };
+        if (piece.medium) {
+            data.artMedium = piece.medium;
+        }
+        if (piece.year) {
+            data.dateCreated = piece.year;
+        }
+        structuredData.textContent = JSON.stringify(data);
+    }
 }
 
 // Function to automatically load images from project folder

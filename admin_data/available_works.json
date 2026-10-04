@@ -1,40 +1,80 @@
 {
-  "boca-h2o-painting-no05": {
-    "id": "boca-h2o-painting-no05",
-    "title": "Boca h2o painting no.05",
-    "price": "$220",
-    "size": "6 x 9 x .5”",
-    "description": "Oil painting, mirror, plastic.\nCreated for a show at Haines Brewery in 2022, this is the partial write-up for the exhibit: \n\". . .I spent the month of March in Mexico doing something completely foreign to my artistic experience; I worked as a studio assistant at Casa de los Artistas for a series of plein air artists and teachers who specialized in oil paintings of atmosphere, palette knife and color landscapes, respectively. After looking at shapes, shadows and the water for weeks on end, I had an epiphany. . .\" \nI realized I’m not a plein air painter. \nI also realized I can paint my own thing, In this case “the essence of water” — embellished with the small pieces of plastic which came to me at the shore of la playa.",
+  "sconces": {
+    "id": "sconces",
+    "title": "Sconces",
+    "price": "$640 each / $1200 pair",
+    "size": "10 x 7 x 5\"",
+    "description": "2026\nCrushed and kiln-formed bottle and sheet glass with copper mesh inclusions, beeswax, custom light fixtures.\nMy new sconces are very exciting. I bought a glass crusher with the remaining funds from my last big project and am now moving into tiles and lighting. Using modernized pâte de verre techniques and crushed bottle and waste sheet glass, I’ve been experimenting with temperatures, molding techniques and inclusions to see where I can push this reclaimed material. I just happened to have four custom sconce fixtures and a slumping mold (I used the inner side;) to create four unique and innovative lights with scrap bottle glass, scrap studio sheet glass and copper mesh . . . . . \nThis is only the beginning . . . . \n\nThe two art glass sconces utilizing two of the custom fixtures, swapping out my crushed glass experiments, are made from two of my glass quilt artworks created for my exhibit at the International Gallery of Contemporary Art (IGCA) in Anchorage in 2022, Trending Towards Tapestry / A Changing Epoch.\nThe Improv water quilts I  recently reworked, experimenting with textures and refiring to develop a velvety finish for my show 4x4 at the Bear’s Lair Gallery in Juneau and then reworked once more, utilizing a slumping mold to transform the wall works into art lighting.",
     "status": "Available",
-    "folder": "boca-h2o-painting-no05",
+    "folder": "sconces",
     "images": [
       "main.jpg",
       "detail-1.jpg",
-      "detail-2.jpg"
+      "detail-10.jpg",
+      "detail-11.jpg",
+      "detail-12.jpg",
+      "detail-2.jpg",
+      "detail-3.jpg",
+      "detail-4.jpg",
+      "detail-5.jpg",
+      "detail-6.jpg",
+      "detail-7.jpg",
+      "detail-8.jpg",
+      "detail-9.jpg"
     ]
   },
-  "boca-h2o-painting-no08": {
-    "id": "boca-h2o-painting-no08",
-    "title": "Boca h2o painting no.08",
-    "price": "$220",
-    "size": "6 x 9 x .5”",
-    "description": "Oil painting, mirror, plastic.\nCreated for a show at Haines Brewery in 2022, this is the partial write-up for the exhibit: \n\". . . I spent the month of March in Mexico doing something completely foreign to my artistic experience; I worked as a studio assistant at Casa de los Artistas for a series of plein air artists and teachers who specialized in oil paintings of atmosphere, palette knife and color landscapes, respectively. After looking at shapes, shadows and the water for weeks on end, I had an epiphany. \nI realized I’m not a plein air painter. \nI also realized I can paint my own thing, In this case “the essence of water” — embellished with the small pieces of plastic which came to me at the shore of la playa. . . .\"",
+  "mini-imperial-chandelier": {
+    "id": "mini-imperial-chandelier",
+    "title": "Mini-Imperial Chandelier",
+    "price": "$340",
+    "size": "20 x 18 x 18\"",
+    "description": "2024\nWooden wagon wheel, kilned glass pendants, metal. \nA miniature version of the chandeliers I created for the Imperial Saloon, downtown Juneau.",
     "status": "Available",
-    "folder": "boca-h2o-painting-no08",
+    "folder": "mini-imperial-chandelier",
     "images": [
       "main.jpg",
       "detail-1.jpg",
-      "detail-2.jpg"
+      "detail-2.jpg",
+      "detail-3.jpg"
     ]
   },
-  "boca-h2o-painting-no10": {
-    "id": "boca-h2o-painting-no10",
-    "title": "Boca h2o painting no.10",
-    "price": "$220",
-    "size": "6 x 9 x .5”",
-    "description": "Oil painting, mirror, plastic.\nCreated for a show at Haines Brewery in 2022, this is the partial write-up for the exhibit: \n“. . . I spent the month of March in Mexico doing something completely foreign to my artistic experience; I worked as a studio assistant at Casa de los Artistas for a series of plein air artists and teachers who specialized in oil paintings of atmosphere, palette knife and color landscapes, respectively. After looking at shapes, shadows and the water for weeks on end, I had an epiphany. \nI realized I’m not a plein air painter. \nI also realized I can paint my own thing, In this case “the essence of water” — embellished with the small pieces of plastic which came to me at the shore of la playa. . . .”",
+  "red-herring": {
+    "id": "red-herring",
+    "title": "Red Herring",
+    "price": "$40",
+    "size": "approx. 8\"",
+    "description": "I’ve made a new school of Red Herring! —I feel like the state of the world calls for them at the moment . . .;)\n\nMy glass herring are an ode to these keystone species of fish in Southeast Alaska. Herring are integral to the communities and wildlife throughout Alaska; I seek to highlight the importance of these critical forage fish as well as to illuminate the dire ecological and environmental changes that are impacting these species.\n\nEvery glass fish I create is designed from scientific research photos and personal catches. They are all\ncreated from waste window glass and are true to size, scale, and have the physical properties of the\nherring and hooligan caught in SE AK. Each individual fish is cut from multiple layers of window glass,\nhand printed and assembled with metal inclusions before kiln fusing. The herring and hooligan are\ndesigned to be suspended from their heads and/or tails and can be hung outside except for in the\nwinter where they are susceptible to freeze/thaw cycles and will break.\n\nWith this work I hope to readily engage and educate the public on environmental issues facing forage\nfish in Alaska, illuminating these issues through artistic interpretation and a stunning visual language\nwhich is accessible to all. Not to mention they are easily packable and can provide remembrances of\nAlaska for years to come. I hope you enjoy having my work in your collection!",
     "status": "Available",
-    "folder": "boca-h2o-painting-no10",
+    "folder": "red-herring",
+    "images": [
+      "main.jpg",
+      "detail-1.jpg",
+      "detail-2.jpg",
+      "detail-3.jpg",
+      "detail-4.jpg",
+      "detail-5.jpg"
+    ]
+  },
+  "hooligan": {
+    "id": "hooligan",
+    "title": "Hooligan",
+    "price": "$27",
+    "size": "approx. 7\"",
+    "description": "My glass herring and hooligan are an ode to these keystone species of fish in Southeast Alaska. Herring\nand Hooligan (Eulachon) are integral to the communities and wildlife throughout Alaska; I seek to\nhighlight the importance of these critical forage fish as well as to illuminate the dire ecological and\nenvironmental changes that are impacting these species.\nEvery glass fish I create is designed from scientific research photos and personal catches. They are all\ncreated from waste window glass and are true to size, scale, and have the physical properties of the\nherring and hooligan caught in SE AK. Each individual fish is cut from multiple layers of window glass,\nhand printed and assembled with metal inclusions before kiln fusing. The herring and hooligan are\ndesigned to be suspended from their heads and/or tails and can be hung outside except for in the\nwinter where they are susceptible to freeze/thaw cycles and will break.\nWith this work I hope to readily engage and educate the public on environmental issues facing forage\nfish in Alaska, illuminating these issues through artistic interpretation and a stunning visual language\nwhich is accessible to all. Not to mention they are easily packable and can provide remembrances of\nAlaska for years to come. I hope you enjoy having my work in your collection!",
+    "status": "Available",
+    "folder": "hooligan",
+    "images": [
+      "main.jpg"
+    ]
+  },
+  "herring": {
+    "id": "herring",
+    "title": "Herring",
+    "price": "$35",
+    "size": "approx. 8\"",
+    "description": "My glass herring and hooligan are an ode to these keystone species of fish in Southeast Alaska. Herring\nand Hooligan (Eulachon) are integral to the communities and wildlife throughout Alaska; I seek to\nhighlight the importance of these critical forage fish as well as to illuminate the dire ecological and\nenvironmental changes that are impacting these species.\nEvery glass fish I create is designed from scientific research photos and personal catches. They are all\ncreated from waste window glass and are true to size, scale, and have the physical properties of the\nherring and hooligan caught in SE AK. Each individual fish is cut from multiple layers of window glass,\nhand printed and assembled with metal inclusions before kiln fusing. The herring and hooligan are\ndesigned to be suspended from their heads and/or tails and can be hung outside except for in the\nwinter where they are susceptible to freeze/thaw cycles and will break.\nWith this work I hope to readily engage and educate the public on environmental issues facing forage\nfish in Alaska, illuminating these issues through artistic interpretation and a stunning visual language\nwhich is accessible to all. Not to mention they are easily packable and can provide remembrances of\nAlaska for years to come. I hope you enjoy having my work in your collection!",
+    "status": "Available",
+    "folder": "herring",
     "images": [
       "main.jpg",
       "detail-1.jpg",
@@ -115,33 +155,6 @@
       "Glacier study 02 Sawyer_detail 4.jpg"
     ]
   },
-  "herring": {
-    "id": "herring",
-    "title": "Herring",
-    "price": "$35",
-    "size": "approx. 8\"",
-    "description": "My glass herring and hooligan are an ode to these keystone species of fish in Southeast Alaska. Herring\nand Hooligan (Eulachon) are integral to the communities and wildlife throughout Alaska; I seek to\nhighlight the importance of these critical forage fish as well as to illuminate the dire ecological and\nenvironmental changes that are impacting these species.\nEvery glass fish I create is designed from scientific research photos and personal catches. They are all\ncreated from waste window glass and are true to size, scale, and have the physical properties of the\nherring and hooligan caught in SE AK. Each individual fish is cut from multiple layers of window glass,\nhand printed and assembled with metal inclusions before kiln fusing. The herring and hooligan are\ndesigned to be suspended from their heads and/or tails and can be hung outside except for in the\nwinter where they are susceptible to freeze/thaw cycles and will break.\nWith this work I hope to readily engage and educate the public on environmental issues facing forage\nfish in Alaska, illuminating these issues through artistic interpretation and a stunning visual language\nwhich is accessible to all. Not to mention they are easily packable and can provide remembrances of\nAlaska for years to come. I hope you enjoy having my work in your collection!",
-    "status": "Available",
-    "folder": "herring",
-    "images": [
-      "main.jpg",
-      "detail-1.jpg",
-      "detail-2.jpg",
-      "detail-3.jpg"
-    ]
-  },
-  "hooligan": {
-    "id": "hooligan",
-    "title": "Hooligan",
-    "price": "$27",
-    "size": "approx. 7\"",
-    "description": "My glass herring and hooligan are an ode to these keystone species of fish in Southeast Alaska. Herring\nand Hooligan (Eulachon) are integral to the communities and wildlife throughout Alaska; I seek to\nhighlight the importance of these critical forage fish as well as to illuminate the dire ecological and\nenvironmental changes that are impacting these species.\nEvery glass fish I create is designed from scientific research photos and personal catches. They are all\ncreated from waste window glass and are true to size, scale, and have the physical properties of the\nherring and hooligan caught in SE AK. Each individual fish is cut from multiple layers of window glass,\nhand printed and assembled with metal inclusions before kiln fusing. The herring and hooligan are\ndesigned to be suspended from their heads and/or tails and can be hung outside except for in the\nwinter where they are susceptible to freeze/thaw cycles and will break.\nWith this work I hope to readily engage and educate the public on environmental issues facing forage\nfish in Alaska, illuminating these issues through artistic interpretation and a stunning visual language\nwhich is accessible to all. Not to mention they are easily packable and can provide remembrances of\nAlaska for years to come. I hope you enjoy having my work in your collection!",
-    "status": "Available",
-    "folder": "hooligan",
-    "images": [
-      "main.jpg"
-    ]
-  },
   "improv-mudflats-quilt-no2": {
     "id": "improv-mudflats-quilt-no2",
     "title": "Improv Mudflats Quilt no.2",
@@ -201,36 +214,47 @@
       "detail-2.jpg"
     ]
   },
-  "mini-imperial-chandelier": {
-    "id": "mini-imperial-chandelier",
-    "title": "Mini-Imperial Chandelier",
-    "price": "$340",
-    "size": "20 x 18 x 18\"",
-    "description": "2024\nWooden wagon wheel, kilned glass pendants, metal. \nA miniature version of the chandeliers I created for the Imperial Saloon, downtown Juneau.",
+  "boca-h2o-painting-no05": {
+    "id": "boca-h2o-painting-no05",
+    "title": "Boca h2o painting no.05",
+    "price": "$220",
+    "size": "6 x 9 x .5”",
+    "description": "Oil painting, mirror, plastic.\nCreated for a show at Haines Brewery in 2022, this is the partial write-up for the exhibit: \n\". . .I spent the month of March in Mexico doing something completely foreign to my artistic experience; I worked as a studio assistant at Casa de los Artistas for a series of plein air artists and teachers who specialized in oil paintings of atmosphere, palette knife and color landscapes, respectively. After looking at shapes, shadows and the water for weeks on end, I had an epiphany. . .\" \nI realized I’m not a plein air painter. \nI also realized I can paint my own thing, In this case “the essence of water” — embellished with the small pieces of plastic which came to me at the shore of la playa.",
     "status": "Available",
-    "folder": "mini-imperial-chandelier",
+    "folder": "boca-h2o-painting-no05",
+    "images": [
+      "main.jpg",
+      "detail-1.jpg",
+      "detail-2.jpg"
+    ]
+  },
+  "boca-h2o-painting-no08": {
+    "id": "boca-h2o-painting-no08",
+    "title": "Boca h2o painting no.08",
+    "price": "$220",
+    "size": "6 x 9 x .5”",
+    "description": "Oil painting, mirror, plastic.\nCreated for a show at Haines Brewery in 2022, this is the partial write-up for the exhibit: \n\". . . I spent the month of March in Mexico doing something completely foreign to my artistic experience; I worked as a studio assistant at Casa de los Artistas for a series of plein air artists and teachers who specialized in oil paintings of atmosphere, palette knife and color landscapes, respectively. After looking at shapes, shadows and the water for weeks on end, I had an epiphany. \nI realized I’m not a plein air painter. \nI also realized I can paint my own thing, In this case “the essence of water” — embellished with the small pieces of plastic which came to me at the shore of la playa. . . .\"",
+    "status": "Available",
+    "folder": "boca-h2o-painting-no08",
+    "images": [
+      "main.jpg",
+      "detail-1.jpg",
+      "detail-2.jpg"
+    ]
+  },
+  "boca-h2o-painting-no10": {
+    "id": "boca-h2o-painting-no10",
+    "title": "Boca h2o painting no.10",
+    "price": "$220",
+    "size": "6 x 9 x .5”",
+    "description": "Oil painting, mirror, plastic.\nCreated for a show at Haines Brewery in 2022, this is the partial write-up for the exhibit: \n“. . . I spent the month of March in Mexico doing something completely foreign to my artistic experience; I worked as a studio assistant at Casa de los Artistas for a series of plein air artists and teachers who specialized in oil paintings of atmosphere, palette knife and color landscapes, respectively. After looking at shapes, shadows and the water for weeks on end, I had an epiphany. \nI realized I’m not a plein air painter. \nI also realized I can paint my own thing, In this case “the essence of water” — embellished with the small pieces of plastic which came to me at the shore of la playa. . . .”",
+    "status": "Available",
+    "folder": "boca-h2o-painting-no10",
     "images": [
       "main.jpg",
       "detail-1.jpg",
       "detail-2.jpg",
       "detail-3.jpg"
-    ]
-  },
-  "red-herring": {
-    "id": "red-herring",
-    "title": "Red Herring",
-    "price": "$40",
-    "size": "approx. 8\"",
-    "description": "I’ve made a new school of Red Herring! —I feel like the state of the world calls for them at the moment . . .;)\n\nMy glass herring are an ode to these keystone species of fish in Southeast Alaska. Herring are integral to the communities and wildlife throughout Alaska; I seek to highlight the importance of these critical forage fish as well as to illuminate the dire ecological and environmental changes that are impacting these species.\n\nEvery glass fish I create is designed from scientific research photos and personal catches. They are all\ncreated from waste window glass and are true to size, scale, and have the physical properties of the\nherring and hooligan caught in SE AK. Each individual fish is cut from multiple layers of window glass,\nhand printed and assembled with metal inclusions before kiln fusing. The herring and hooligan are\ndesigned to be suspended from their heads and/or tails and can be hung outside except for in the\nwinter where they are susceptible to freeze/thaw cycles and will break.\n\nWith this work I hope to readily engage and educate the public on environmental issues facing forage\nfish in Alaska, illuminating these issues through artistic interpretation and a stunning visual language\nwhich is accessible to all. Not to mention they are easily packable and can provide remembrances of\nAlaska for years to come. I hope you enjoy having my work in your collection!",
-    "status": "Available",
-    "folder": "red-herring",
-    "images": [
-      "main.jpg",
-      "detail-1.jpg",
-      "detail-2.jpg",
-      "detail-3.jpg",
-      "detail-4.jpg",
-      "detail-5.jpg"
     ]
   },
   "salt-dishes-sea-salt": {
@@ -251,30 +275,6 @@
       "detail-6.jpg",
       "detail-7.jpg",
       "detail-8.jpg"
-    ]
-  },
-  "sconces": {
-    "id": "sconces",
-    "title": "Sconces",
-    "price": "$640 each / $1200 pair",
-    "size": "10 x 7 x 5\"",
-    "description": "2026\nCrushed and kiln-formed bottle and sheet glass with copper mesh inclusions, beeswax, custom light fixtures.\nMy new sconces are very exciting. I bought a glass crusher with the remaining funds from my last big project and am now moving into tiles and lighting. Using modernized pâte de verre techniques and crushed bottle and waste sheet glass, I’ve been experimenting with temperatures, molding techniques and inclusions to see where I can push this reclaimed material. I just happened to have four custom sconce fixtures and a slumping mold (I used the inner side;) to create four unique and innovative lights with scrap bottle glass, scrap studio sheet glass and copper mesh . . . . . \nThis is only the beginning . . . . \n\nThe two art glass sconces utilizing two of the custom fixtures, swapping out my crushed glass experiments, are made from two of my glass quilt artworks created for my exhibit at the International Gallery of Contemporary Art (IGCA) in Anchorage in 2022, Trending Towards Tapestry / A Changing Epoch.\nThe Improv water quilts I  recently reworked, experimenting with textures and refiring to develop a velvety finish for my show 4x4 at the Bear’s Lair Gallery in Juneau and then reworked once more, utilizing a slumping mold to transform the wall works into art lighting.",
-    "status": "Available",
-    "folder": "sconces",
-    "images": [
-      "main.jpg",
-      "detail-1.jpg",
-      "detail-10.jpg",
-      "detail-11.jpg",
-      "detail-12.jpg",
-      "detail-2.jpg",
-      "detail-3.jpg",
-      "detail-4.jpg",
-      "detail-5.jpg",
-      "detail-6.jpg",
-      "detail-7.jpg",
-      "detail-8.jpg",
-      "detail-9.jpg"
     ]
   }
 }

@@ -58,25 +58,7 @@ window.projectData = {
     "description": "I construct my life around my artistic philosophies of creative reuse and waste stream impacts on environments — I reflect my beliefs through my chandeliers. My chandeliers combine kiln fused waste glass, kiln cast glass, found items and lighting elements. They come in many configurations and designs.",
     "folder": "project3",
     "images": [
-      "main.png",
-      "detail-1.png",
-      "detail-2.png",
-      "detail-3.png",
-      "detail-4.png",
-      "detail-5.png",
-      "detail-6.png",
-      "detail-7.jpg",
-      "detail-8.jpg",
-      "detail-9.jpg",
-      "detail-10.jpg",
-      "detail-11.jpg",
-      "detail-12.jpg",
-      "detail-13.jpg",
-      "detail-14.jpg",
-      "detail-15.jpg",
-      "detail-16.jpg",
-      "detail-17.jpg",
-      "detail-18.png"
+      "main.jpg"
     ]
   },
   "project4": {
