@@ -516,7 +516,7 @@ function animateWorkItems() {
 function loadGridBackgroundImages() {
     const workItems = document.querySelectorAll('.work-item');
     const imagePaths = [
-        'main.png', 'main.jpg', 'main.JPG', 'main.jpeg',
+        'main.png', 'main.jpg', 'main.JPG', 'main.jpeg', 'main.webp', 'main.gif', 'main.bmp',
         'primary.png', 'primary.jpg', 'primary.jpeg',
         'hero.png', 'hero.jpg', 'hero.jpeg'
     ];

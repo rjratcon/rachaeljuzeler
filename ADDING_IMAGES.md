@@ -150,5 +150,6 @@ with its photos and text.
 - Text and photo lists: `admin_data/project_pieces.json` (one entry per chandelier, in display order)
 - Photos: `images/chandeliers/<piece id>/main.jpg`, `detail-1.jpg`, ...
 
-The content manager does not have a screen for these yet. Edit the JSON file by hand, then open the
-content manager once; it rewrites `project-pieces-data.js` and `sitemap.xml`.
+Use the PIECES tab in the content manager to add, edit, reorder, or delete a chandelier and its
+photos. It rewrites `project-pieces-data.js` and `sitemap.xml`. A piece's link and folder keep the id
+made from its first title, so renaming it later does not break anything.

@@ -16,18 +16,19 @@ Static portfolio website for artist Rachael Juzeler / Ratchet Constructs, LLC. H
 
 - `project-data.js` - Project titles, descriptions, and image lists
 - `project-pieces-data.js` - Individual works shown as a clickable grid on a project page (CHANDELIERS)
-- `available-data.js` - Available works, in display order (new works are added at the top; to reorder, reorder the entries in `admin_data/available_works.json`)
+- `available-data.js` - Available works, in display order (new works are added at the top; reorder with Move Up/Move Down in the manager)
 - `news-data.js` - News items
 - `sitemap.xml`
 
-Source of truth is `admin_data/*.json`. Run `python rachael_content_manager.py` to edit projects, available works, and news; it rewrites the files above. Commit and push everything it changes, including `project-data.js`. The About/CV and Contact tabs in the manager are placeholders; edit `about.html` and `contact.html` directly.
+Source of truth is `admin_data/*.json`. Run `python rachael_content_manager.py` to edit projects, chandelier pieces, available works, and news; it rewrites the files above. Commit and push everything it changes, including `project-data.js`. The bio, CV sections, contact details, and home page tile titles have no JSON: the manager reads and rewrites them in the HTML pages directly (contact details on every page, because each footer repeats them). The manager refuses to start if a file in `admin_data/` can't be read, which usually means leftover merge conflict markers.
 
 ## Images
 
 - `images/projectN/` - `main.*` is the hero and home-grid tile; all other image files appear in the project gallery in natural order
 - `images/available/<work>/` - `main.*` then `detail-N.*`
 - `images/chandeliers/<piece id>/` - `main.*` then `detail-N.*` for each chandelier
+- `images/news/` - preview photos added with Browse for Image on the News tab
 
-The content manager has no screen for project pieces yet. Edit `admin_data/project_pieces.json` by hand, then open the content manager (or click Update on any project) to regenerate `project-pieces-data.js` and `sitemap.xml`.
+Use the PIECES tab in the content manager to add, edit, reorder, or delete project pieces and their photos. It updates `admin_data/project_pieces.json` and regenerates `project-pieces-data.js` and `sitemap.xml`.
 
 The content manager names copied images automatically.
